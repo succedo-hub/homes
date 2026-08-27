@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { property } from '../../data/property';
+export function getStaticPaths() { return [{ params: { slug: property.slug } }]; }
+const imageUrls = property.gallery.map(({ src }) => new URL(src.src, Astro.site).href);
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'Apartment', name: property.title, description: property.intro, url: Astro.url.href, image: imageUrls, numberOfRooms: 4, floorSize: { '@type': 'QuantitativeValue', value: 94.1, unitCode: 'MTK' }, address: { '@type': 'PostalAddress', streetAddress: 'Svärtesgränd', addressLocality: 'Mariehamn', addressRegion: 'Åland', addressCountry: 'AX' } },
+  { '@context': 'https://schema.org', '@type': 'Offer', price: 1290, priceCurrency: 'EUR', availability: 'https://schema.org/PreOrder', itemOffered: { '@type': 'Apartment', name: property.title } }
+];
+---
+<BaseLayout title={property.title} description={`${property.title} på Svärtesgränd i Västernäs. Cirka 94,1 m², tre sovrum och hyra 1 290 euro per månad.`} image={property.gallery[0].src.src} schema={schema}>
+  <div class="container breadcrumb"><a href="/bostader">Bostäder</a><span aria-hidden="true">/</span><span>Svärtesgränd</span></div>
+  <section class="property-heading container"><div><span class="status static">För uthyrning</span><h1>{property.title}</h1><p class="location">{property.location}</p></div><div class="price"><strong>1 290 €</strong><span>per månad</span></div></section>
+  <section class="gallery container" aria-label="Bildgalleri">
+    {property.gallery.slice(0, 5).map((item, index) => <button class:list={['gallery-item', { main: index === 0 }]} type="button" data-index={index} aria-label={`Öppna bild ${index + 1} av ${property.gallery.length}: ${item.alt}`}><Image src={item.src} alt={item.alt} widths={index === 0 ? [640, 1100, 1600] : [360, 640]} sizes={index === 0 ? '(max-width: 760px) 100vw, 60vw' : '(max-width: 760px) 50vw, 25vw'} format="webp" quality={82} loading={index === 0 ? 'eager' : 'lazy'} /></button>)}
+    <button class="gallery-count" type="button" data-index="0">Visa alla {property.gallery.length} bilder</button>
+  </section>
+  <section class="property-layout container section">
+    <div class="property-main">
+      <div class="key-facts"><span><Icon name="rooms" /><strong>4 rum</strong><small>och kök</small></span><span><Icon name="area" /><strong>94,1 m²</strong><small>97 m² med förråd</small></span><span><Icon name="home" /><strong>3 sovrum</strong><small>ett plan</small></span><span><Icon name="calendar" /><strong>1 januari 2027</strong><small>eller tidigare enligt överenskommelse</small></span></div>
+      <div class="prose"><h2>Ljust och välplanerat vid återvändsgränd</h2><p>{property.intro}</p><p>Den öppna planlösningen binder samman kök, matplats och vardagsrum. Från vardagsrummet nås balkongen med trädäck i öster-/söderläge. Den egna delen av tomten har både stenläggning och gräsmatta, med möjlighet till mindre odlingar.</p><h2>Rummen och utrustningen</h2><p>Köket har keramikhäll, kyl, frys, fläkt och diskmaskin. Badrummet är utfört med kakel och klinker i neutrala färger samt duschväggar i glas. Bostaden har vattenburen golvvärme via fjärrvärme, mekanisk ventilation och anslutning till stadens vatten och avlopp samt Ålcoms fibernät.</p><p>Bostaden kan även vara till salu enligt överenskommelse med intressent. Försäljningspris lämnas vid eventuell dialog.</p></div>
+      <div class="facts-section"><p class="eyebrow">Fakta</p><h2>Om bostaden</h2><dl>{property.facts.map(([term, value]) => <div><dt>{term}</dt><dd>{value}</dd></div>)}</dl></div>
+    </div>
+    <aside class="contact-card"><p class="eyebrow">Intresserad?</p><h2>Ta nästa steg</h2><p>Kontakta oss för frågor eller för att anmäla ditt intresse.</p><a class="button full" href={`mailto:info@homes.ax?cc=anton.strandvik@gmail.com&subject=Intresseanmälan%20–%20${encodeURIComponent(property.title)}`}>Anmäl intresse <Icon name="mail" /></a><a class="button button-secondary full" href={`mailto:info@homes.ax?cc=anton.strandvik@gmail.com&subject=Fråga%20om%20${encodeURIComponent(property.title)}`}>Ställ en fråga</a><div class="contact-addresses"><a href="mailto:info@homes.ax">info@homes.ax</a><a href="mailto:anton.strandvik@gmail.com">anton.strandvik@gmail.com</a></div><p class="mini-disclaimer">Åland Homes är en annonsplattform, inte fastighetsmäklare eller part i en affär.</p></aside>
+  </section>
+  <dialog class="lightbox" aria-label="Bildvisning"><button class="lightbox-close" type="button" aria-label="Stäng bildvisning"><Icon name="close" size={28} /></button><button class="lightbox-prev" type="button" aria-label="Föregående bild">‹</button><figure><img src="" alt="" /><figcaption></figcaption></figure><button class="lightbox-next" type="button" aria-label="Nästa bild">›</button></dialog>
+  <script is:inline define:vars={{ gallery: property.gallery.map(({ src, alt }) => ({ src: src.src, alt })) }}>
+    const dialog = document.querySelector('.lightbox'); const image = dialog?.querySelector('img'); const caption = dialog?.querySelector('figcaption'); let active = 0;
+    const show = (index) => { active = (index + gallery.length) % gallery.length; if (image) { image.src = gallery[active].src; image.alt = gallery[active].alt; } if (caption) caption.textContent = `${active + 1} / ${gallery.length} · ${gallery[active].alt}`; };
+    document.querySelectorAll('[data-index]').forEach((button) => button.addEventListener('click', () => { show(Number(button.dataset.index)); dialog?.showModal(); }));
+    dialog?.querySelector('.lightbox-close')?.addEventListener('click', () => dialog.close()); dialog?.querySelector('.lightbox-prev')?.addEventListener('click', () => show(active - 1)); dialog?.querySelector('.lightbox-next')?.addEventListener('click', () => show(active + 1));
+    dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    dialog?.addEventListener('keydown', (event) => { if (event.key === 'ArrowLeft') show(active - 1); if (event.key === 'ArrowRight') show(active + 1); });
+  </script>
+</BaseLayout>

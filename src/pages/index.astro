@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import Icon from '../components/Icon.astro';
+import { property } from '../data/property';
+const schema = {
+  '@context': 'https://schema.org', '@type': 'Organization', name: 'Åland Homes', url: 'https://homes.ax',
+  email: 'info@homes.ax', description: 'Digital annonsplattform för bostäder och bostadsrelaterade tjänster på Åland.'
+};
+---
+<BaseLayout title="Åland Homes" description="Upptäck bostäder och bostadsrelaterade tjänster på Åland. En tydlig digital annonsplattform för nästa steg i ditt boende." schema={schema}>
+  <section class="hero">
+    <Image class="hero-image" src={property.gallery[0].src} alt="Bostadsområde med parhus i Västernäs, Mariehamn" widths={[720, 1200, 1800]} sizes="100vw" format="webp" quality={84} loading="eager" fetchpriority="high" />
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <p class="eyebrow light">Bostäder på Åland</p>
+      <h1>Ditt hem.<br />Dina möjligheter.</h1>
+      <p>En enklare väg att synas, jämföra bostäder och ta nästa steg.</p>
+      <div class="button-row"><a class="button button-light" href="/bostader">Se bostäder <Icon name="arrow" /></a><a class="button button-ghost-light" href="mailto:info@homes.ax?subject=Publicera%20annons">Publicera annons</a></div>
+    </div>
+  </section>
+
+  <section class="section container intro-grid">
+    <div><p class="eyebrow">Aktuellt boende</p><h2>Ett nytt sätt att hitta hem på Åland</h2></div>
+    <p class="lead">Åland Homes samlar privata bostadsannonser och gör dem enkla att upptäcka. Tydlig information, genomtänkta presentationer och direktkontakt mellan människor.</p>
+  </section>
+  <section class="section section-soft"><div class="container"><PropertyCard /></div></section>
+  <section class="section container steps">
+    <div class="section-heading"><p class="eyebrow">Så fungerar det</p><h2>Raka vägen vidare</h2></div>
+    <div class="step-grid">
+      <article><span>01</span><h3>Upptäck</h3><p>Se bostäder med sakliga fakta och ett tydligt bildmaterial.</p></article>
+      <article><span>02</span><h3>Jämför</h3><p>Få en samlad bild av boendet, läget och villkoren.</p></article>
+      <article><span>03</span><h3>Ta kontakt</h3><p>Kontakta annonsören direkt för frågor, visning och nästa steg.</p></article>
+    </div>
+  </section>
+  <section class="section cta-band"><div class="container cta-inner"><div><p class="eyebrow light">Har du en bostad?</p><h2>Ge ditt objekt en presentation som gör det rättvisa.</h2></div><a class="button button-light" href="mailto:info@homes.ax?subject=Jag%20vill%20publicera%20en%20annons">Kontakta oss <Icon name="mail" /></a></div></section>
+</BaseLayout>
