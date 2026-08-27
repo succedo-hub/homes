@@ -43,6 +43,24 @@ Bostaden finns typad i `src/data/property.ts`. Den kan byggas ut eller ersättas
 
 ## Cloudflare
 
+### Workers Builds via GitHub
+
+I **Cloudflare Dashboard → Workers & Pages → aland-homes → Settings → Build** ska följande värden användas:
+
+| Inställning | Värde |
+| --- | --- |
+| Production branch | `main` |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Non-production branch deploy command | `npx wrangler versions upload` |
+| Root directory | `/` eller tomt |
+
+`dist/` skapas av Astro-kommandot i byggsteget och läses därefter av Wrangler. Cloudflare Workers Builds använder inte `build.command` från `wrangler.jsonc`, så byggkommandot måste anges i dashboardens Build settings. Produktionsbygget fungerar först efter att webbplatsens PR har slagits samman till `main`; feature-branchen kan användas som preview innan dess.
+
+Efter att Build settings har sparats ska en **ny build** startas. Att bara återköra en äldre build kan använda inställningarna som var aktiva när den körningen skapades.
+
+### Lokal eller extern CI-driftsättning
+
 Kontrollera autentisering och gör först en torrkörning:
 
 ```bash
