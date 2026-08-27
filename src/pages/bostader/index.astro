@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PropertyCard from '../../components/PropertyCard.astro';
+---
+<BaseLayout title="Bostäder" description="Se aktuella bostadsannonser på Åland Homes. Bostäder till salu eller för uthyrning med direktkontakt till annonsören.">
+  <section class="page-hero container"><p class="eyebrow">Bostäder</p><h1>Hitta ditt nästa boende</h1><p class="lead">Här samlar vi aktuella bostadsannonser på Åland. Kontakt och överenskommelser sker direkt med annonsören.</p></section>
+  <section class="section section-soft"><div class="container"><div class="listing-toolbar"><p><strong>1 bostad</strong> publicerad</p><span class="pill">Mariehamn</span></div><PropertyCard /></div></section>
+  <section class="section container centered"><h2>Fler bostäder kommer</h2><p class="lead narrow">Vill du publicera en bostad? Berätta kort om objektet så återkommer vi med nästa steg.</p><a class="button" href="mailto:info@homes.ax?subject=Publicera%20bostad">Publicera en annons</a></section>
+</BaseLayout>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://homes.ax/sitemap-index.xml

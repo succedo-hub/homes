@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/aland-homes-original.png';
+import Icon from './Icon.astro';
+const path = Astro.url.pathname;
+const links = [
+  ['/bostader', 'Bostäder'], ['/tjanster', 'Tjänster'], ['/om-oss', 'Om oss'], ['/kontakt', 'Kontakt']
+] as const;
+---
+<header class="site-header">
+  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+  <div class="header-inner container">
+    <a class="brand" href="/" aria-label="Åland Homes – startsida">
+      <Image src={logo} alt="Åland Homes" width={310} format="webp" quality={88} loading="eager" />
+    </a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav"><Icon name="menu" /> <span>Meny</span></button>
+    <nav id="nav" aria-label="Huvudmeny">
+      {links.map(([href, label]) => <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
+      <a class="button button-small" href="mailto:info@homes.ax?subject=Jag%20vill%20publicera%20en%20annons">Publicera annons</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.menu-button');
+  const nav = document.querySelector<HTMLElement>('#nav');
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('open', !open);
+  });
+</script>
