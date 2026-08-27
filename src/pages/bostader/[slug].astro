@@ -1,13 +1,17 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import { property } from '../../data/property';
 export function getStaticPaths() { return [{ params: { slug: property.slug } }]; }
-const imageUrls = property.gallery.map(({ src }) => new URL(src.src, Astro.site).href);
+const lightboxGallery = await Promise.all(property.gallery.map(async ({ src, alt }) => ({
+  src: (await getImage({ src, width: 2000, format: 'webp', quality: 84 })).src,
+  alt,
+})));
+const imageUrls = lightboxGallery.map(({ src }) => new URL(src, Astro.site).href);
 const schema = [
-  { '@context': 'https://schema.org', '@type': 'Apartment', name: property.title, description: property.intro, url: Astro.url.href, image: imageUrls, numberOfRooms: 4, floorSize: { '@type': 'QuantitativeValue', value: 94.1, unitCode: 'MTK' }, address: { '@type': 'PostalAddress', streetAddress: 'Svärtesgränd', addressLocality: 'Mariehamn', addressRegion: 'Åland', addressCountry: 'AX' } },
+  { '@context': 'https://schema.org', '@type': 'Apartment', name: property.title, description: property.intro, url: Astro.url.href, image: imageUrls, numberOfRooms: 4, floorLevel: '2', floorSize: { '@type': 'QuantitativeValue', value: 94.1, unitCode: 'MTK' }, address: { '@type': 'PostalAddress', streetAddress: 'Svärtesgränd', addressLocality: 'Mariehamn', addressRegion: 'Åland', addressCountry: 'AX' } },
   { '@context': 'https://schema.org', '@type': 'Offer', price: 1290, priceCurrency: 'EUR', availability: 'https://schema.org/PreOrder', itemOffered: { '@type': 'Apartment', name: property.title } }
 ];
 ---
@@ -20,8 +24,8 @@ const schema = [
   </section>
   <section class="property-layout container section">
     <div class="property-main">
-      <div class="key-facts"><span><Icon name="rooms" /><strong>4 rum</strong><small>och kök</small></span><span><Icon name="area" /><strong>94,1 m²</strong><small>97 m² med förråd</small></span><span><Icon name="home" /><strong>3 sovrum</strong><small>ett plan</small></span><span><Icon name="calendar" /><strong>1 januari 2027</strong><small>eller enligt överenskommelse</small></span></div>
-      <div class="prose"><h2>Ljust och välplanerat vid återvändsgränd</h2><p>{property.intro}</p><p><strong>Lägenheten är tillgänglig för dialog och visning nu.</strong> Den uthyres från 1.1.2027 eller enligt överenskommelse.</p><p>Den öppna planlösningen binder samman kök, matplats och vardagsrum. Från vardagsrummet nås balkongen med trädäck i öster-/söderläge. Den egna delen av tomten har både stenläggning och gräsmatta, med möjlighet till mindre odlingar.</p><h2>Rummen och utrustningen</h2><p>Köket har keramikhäll, kyl, frys, fläkt och diskmaskin. Badrummet är utfört med kakel och klinker i neutrala färger samt duschväggar i glas. Bostaden har vattenburen golvvärme via fjärrvärme, mekanisk ventilation och anslutning till stadens vatten och avlopp samt Ålcoms fibernät.</p><p>Bostaden kan även vara till salu enligt överenskommelse med intressent. Försäljningspris lämnas vid eventuell dialog.</p></div>
+      <div class="key-facts"><span><Icon name="rooms" /><strong>4 rum</strong><small>och kök</small></span><span><Icon name="area" /><strong>94,1 m²</strong><small>97 m² med förråd</small></span><span><Icon name="home" /><strong>Våningsplan 2</strong><small>uthyres omöblerad</small></span><span><Icon name="calendar" /><strong>1 januari 2027</strong><small>eller enligt överenskommelse</small></span></div>
+      <div class="prose"><h2>Ljust och välplanerat vid återvändsgränd</h2><p>{property.intro}</p><p><strong>Lägenheten är tillgänglig för dialog och visning nu.</strong> Den uthyres omöblerad från 1.1.2027 eller enligt överenskommelse. Möbler och annan lös inredning som syns på fotografierna ingår inte.</p><p>Den öppna planlösningen binder samman kök, matplats och vardagsrum. Bostaden ligger i våningsplan 2. Den egna uteplatsen ligger i västerläge och den disponerade delen av tomten har både stenläggning och gräsmatta, med möjlighet till mindre odlingar.</p><h2>Rummen och utrustningen</h2><p>Köket har keramikhäll, kyl, frys, fläkt och diskmaskin. Badrummet är utfört med kakel och klinker i neutrala färger samt duschväggar i glas. Bostaden har vattenburen golvvärme via fjärrvärme, mekanisk ventilation och anslutning till stadens vatten och avlopp samt Ålcoms fibernät.</p><p>Bostaden kan även vara till salu enligt överenskommelse med intressent. Försäljningspris lämnas vid eventuell dialog.</p></div>
       <div class="facts-section"><p class="eyebrow">Fakta</p><h2>Om bostaden</h2><dl>{property.facts.map(([term, value]) => <div><dt>{term}</dt><dd>{value}</dd></div>)}</dl></div>
     </div>
     <aside class="contact-card"><p class="eyebrow">Intresserad?</p><h2>Ta nästa steg</h2><p>Kontakta oss för frågor eller fyll i intresseanmälan längre ner på sidan.</p><a class="button full" href="#intresse">Anmäl intresse <Icon name="arrow" /></a><a class="button button-secondary full" href={`mailto:info@homes.ax?cc=anton.strandvik@gmail.com&subject=Fråga%20om%20${encodeURIComponent(property.title)}`}>Ställ en fråga</a><div class="contact-addresses"><a href="mailto:info@homes.ax">info@homes.ax</a><a href="mailto:anton.strandvik@gmail.com">anton.strandvik@gmail.com</a></div><p class="mini-disclaimer">Åland Homes är en annonsplattform, inte fastighetsmäklare eller part i en affär.</p></aside>
@@ -33,7 +37,7 @@ const schema = [
     </div>
   </section>
   <dialog class="lightbox" aria-label="Bildvisning"><button class="lightbox-close" type="button" aria-label="Stäng bildvisning"><Icon name="close" size={28} /></button><button class="lightbox-prev" type="button" aria-label="Föregående bild">‹</button><figure><img src="" alt="" /><figcaption></figcaption></figure><button class="lightbox-next" type="button" aria-label="Nästa bild">›</button></dialog>
-  <script is:inline define:vars={{ gallery: property.gallery.map(({ src, alt }) => ({ src: src.src, alt })) }}>
+  <script is:inline define:vars={{ gallery: lightboxGallery }}>
     const dialog = document.querySelector('.lightbox'); const image = dialog?.querySelector('img'); const caption = dialog?.querySelector('figcaption'); let active = 0;
     const show = (index) => { active = (index + gallery.length) % gallery.length; if (image) { image.src = gallery[active].src; image.alt = gallery[active].alt; } if (caption) caption.textContent = `${active + 1} / ${gallery.length} · ${gallery[active].alt}`; };
     document.querySelectorAll('[data-index]').forEach((button) => button.addEventListener('click', () => { show(Number(button.dataset.index)); dialog?.showModal(); }));

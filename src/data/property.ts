@@ -6,6 +6,9 @@ import kitchen from '../assets/homes/mariehamn-kitchen.jpeg';
 import bedroom from '../assets/homes/mariehamn-bedroom.jpeg';
 import bedroomTwo from '../assets/homes/mariehamn-bedroom-2.jpeg';
 import bathroom from '../assets/homes/mariehamn-bathroom.jpeg';
+import droneOverviewWest from '../assets/homes/mariehamn-drone-overview-west.jpg';
+import dronePropertyWest from '../assets/homes/mariehamn-drone-property-west.jpg';
+import droneGardenWest from '../assets/homes/mariehamn-drone-garden-west.jpg';
 
 export const property = {
   slug: '4-rum-och-kok-i-parhus-i-mariehamn',
@@ -22,6 +25,9 @@ export const property = {
   facts: [
     ['Bolag', 'Bostads Ab Svärtan i Mariehamn'],
     ['Inflyttningsår', '2016'],
+    ['Våningsplan', '2'],
+    ['Möblering', 'Uthyres omöblerad'],
+    ['Uteplats', 'Egen uteplats i västerläge'],
     ['Värme', 'Vattenburen golvvärme via fjärrvärme'],
     ['Ventilation', 'Mekanisk ventilation'],
     ['Vatten och avlopp', 'Anslutning till stadens nät'],
@@ -29,14 +35,17 @@ export const property = {
     ['Bilplats', 'En bilplats med eluttag'],
   ] as const,
   gallery: [
-    { src: drone, alt: 'Drönarvy över parhuset och det lugna bostadsområdet i Västernäs' },
+    { src: droneOverviewWest, alt: 'Drönarvy rakt ovanifrån över parhusområdet i Västernäs' },
+    { src: dronePropertyWest, alt: 'Drönarvy över parhuset, den egna uteplatsen och trädgården i västerläge' },
+    { src: droneGardenWest, alt: 'Närmare drönarvy över parhuset och den disponerade delen av tomten' },
+    { src: drone, alt: 'Översiktsbild över parhuset och det lugna bostadsområdet i Västernäs' },
     { src: exterior, alt: 'Parhusets mörka träfasad och den egna gräsmattan' },
-    { src: terrace, alt: 'Stenlagd uteplats med matgrupp, planteringar och insynsskyddande häck' },
-    { src: livingRoom, alt: 'Ljust vardagsrum och matplats i öppen planlösning' },
-    { src: kitchen, alt: 'Vitt kök med arbetsbänk, keramikhäll och fönster' },
-    { src: bedroom, alt: 'Sovrum med dubbelsäng, mörkblå textilier och fönster' },
-    { src: bedroomTwo, alt: 'Mindre sovrum med enkelsäng och färgstark matta' },
-    { src: bathroom, alt: 'Badrum med kakel, klinker, glasdusch och belyst spegel' },
+    { src: terrace, alt: 'Stenlagd uteplats i västerläge, fotograferad med tidigare utemöblering som inte ingår' },
+    { src: livingRoom, alt: 'Ljust vardagsrum och matplats i öppen planlösning, fotograferat med tidigare möblering; bostaden hyrs ut omöblerad' },
+    { src: kitchen, alt: 'Vitt kök med arbetsbänk, keramikhäll och fönster; lös inredning på bilden ingår inte' },
+    { src: bedroom, alt: 'Sovrum fotograferat med tidigare möblering; bostaden hyrs ut omöblerad' },
+    { src: bedroomTwo, alt: 'Mindre sovrum fotograferat med tidigare möblering; bostaden hyrs ut omöblerad' },
+    { src: bathroom, alt: 'Badrum med kakel, klinker, glasdusch och belyst spegel; lös inredning på bilden ingår inte' },
   ],
 } as const;
 
