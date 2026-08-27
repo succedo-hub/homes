@@ -5,7 +5,7 @@ import { test } from 'node:test';
 const read = (path) => readFile(new URL(`../dist${path}`, import.meta.url), 'utf8');
 
 test('alla centrala sidor är byggda', async () => {
-  const pages = ['/', '/bostader/', '/bostader/4-rum-och-kok-i-parhus-i-mariehamn/', '/tjanster/', '/om-oss/', '/kontakt/', '/integritet/', '/villkor/', '/404.html'];
+  const pages = ['/', '/bostader/', '/bostader/4-rum-och-kok-i-parhus-i-mariehamn/', '/jag-soker-bostad/', '/tjanster/', '/om-oss/', '/kontakt/', '/integritet/', '/villkor/', '/404.html'];
   for (const page of pages) {
     const file = page.endsWith('.html') ? page : `${page}index.html`;
     assert.ok((await stat(new URL(`../dist${file}`, import.meta.url))).isFile(), `Saknar ${file}`);
@@ -14,8 +14,15 @@ test('alla centrala sidor är byggda', async () => {
 
 test('objektsidan innehåller verifierade kärnfakta och ansvarsfriskrivning', async () => {
   const html = await read('/bostader/4-rum-och-kok-i-parhus-i-mariehamn/index.html');
-  for (const text of ['94,1 m²', '1 290 €', 'Bostads Ab Svärtan', '1 januari 2027', 'annonsplattform']) assert.match(html, new RegExp(text));
+  for (const text of ['94,1 m²', '1 290 €', 'Bostads Ab Svärtan', '1 januari 2027', 'tillgänglig för dialog och visning nu', 'uthyres från 1.1.2027', 'annonsplattform']) assert.match(html, new RegExp(text, 'i'));
   assert.match(html, /application\/ld\+json/);
+  assert.match(html, /action="https:\/\/formspree.io\/f\/xbgjrepy"/);
+});
+
+test('bostadssökande kan lämna kontaktuppgifter via Formspree', async () => {
+  const html = await read('/jag-soker-bostad/index.html');
+  assert.match(html, /action="https:\/\/formspree.io\/f\/xbgjrepy"/);
+  for (const field of ['namn', 'email', 'telefon', 'onskat_omrade', 'meddelande']) assert.match(html, new RegExp(`name="${field}"`));
 });
 
 test('startsidan har grundläggande SEO och ingen spårning', async () => {

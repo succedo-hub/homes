@@ -1,0 +1,56 @@
+---
+interface Props {
+  subject: string;
+  context: 'bostadssökande' | 'objektintresse';
+  submitLabel: string;
+  showPreferences?: boolean;
+  propertyTitle?: string;
+}
+
+const { subject, context, submitLabel, showPreferences = false, propertyTitle } = Astro.props;
+---
+<form class="contact-form" action="https://formspree.io/f/xbgjrepy" method="POST">
+  <input type="hidden" name="_subject" value={subject} />
+  <input type="hidden" name="formulartyp" value={context} />
+  {propertyTitle && <input type="hidden" name="bostad" value={propertyTitle} />}
+  <div class="form-grid">
+    <label>
+      <span>Namn <abbr title="obligatoriskt">*</abbr></span>
+      <input type="text" name="namn" autocomplete="name" required />
+    </label>
+    <label>
+      <span>E-post <abbr title="obligatoriskt">*</abbr></span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+    <label>
+      <span>Telefon</span>
+      <input type="tel" name="telefon" autocomplete="tel" inputmode="tel" />
+    </label>
+    {showPreferences && <label>
+      <span>Önskat område</span>
+      <input type="text" name="onskat_omrade" autocomplete="address-level2" placeholder="Till exempel Mariehamn" />
+    </label>}
+    {showPreferences && <label>
+      <span>Antal rum</span>
+      <input type="text" name="antal_rum" inputmode="numeric" placeholder="Till exempel 3–4 rum" />
+    </label>}
+    {showPreferences && <label>
+      <span>Önskad inflyttning</span>
+      <input type="text" name="onskad_inflyttning" placeholder="Till exempel januari 2027" />
+    </label>}
+  </div>
+  <label>
+    <span>{showPreferences ? 'Berätta vad du söker' : 'Meddelande'} <abbr title="obligatoriskt">*</abbr></span>
+    <textarea name="meddelande" rows="6" required placeholder={showPreferences ? 'Beskriv gärna boendet du söker, ungefärlig budget och andra viktiga önskemål.' : 'Berätta gärna kort om vilka som önskar bo i lägenheten och när ni önskar flytta in.'}></textarea>
+  </label>
+  <label class="consent-row">
+    <input type="checkbox" name="integritet_godkand" value="Ja" required />
+    <span>Jag godkänner att Åland Homes behandlar uppgifterna för att besvara min förfrågan enligt <a href="/integritet">integritetspolicyn</a>. <abbr title="obligatoriskt">*</abbr></span>
+  </label>
+  <label class="honeypot" aria-hidden="true">
+    Lämna detta fält tomt
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+  </label>
+  <button class="button" type="submit">{submitLabel}</button>
+  <p class="form-note">Formuläret skickas säkert via Formspree. Åland Homes är en annonsplattform och matchar inte automatiskt bostadssökande med annonsörer.</p>
+</form>

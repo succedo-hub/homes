@@ -16,7 +16,7 @@ export const property = {
   area: 'cirka 94,1 m²',
   totalArea: '97 m² inklusive förråd',
   bedrooms: 3,
-  available: '1 januari 2027 eller tidigare enligt överenskommelse',
+  available: 'Tillgänglig för dialog och visning nu. Uthyres från 1 januari 2027 eller enligt överenskommelse.',
   tenure: 'Hyresobjekt · kan även vara till salu enligt överenskommelse',
   intro: 'Ett bekvämt boende i ett plan med ljusa sociala ytor, tre sovrum, egen uteplats och ett lugnt läge vid en återvändsgränd i Västernäs.',
   facts: [
