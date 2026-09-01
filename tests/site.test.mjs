@@ -38,6 +38,7 @@ test('startsidan har grundläggande SEO och ingen spårning', async () => {
   assert.match(html, /property="og:title"/);
   assert.doesNotMatch(html, /googletagmanager|analytics|cookie/i);
   assert.match(html, /Hitta hem/);
+  assert.match(html, /Skapa synlighet/);
   assert.match(html, /Publicera annons/);
   assert.match(html, /homes-ax-icon-light\.svg/);
 });
