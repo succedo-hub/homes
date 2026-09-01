@@ -1,4 +1,3 @@
-import drone from '../assets/homes/mariehamn-drone.jpeg';
 import exterior from '../assets/homes/mariehamn-exterior.jpeg';
 import terrace from '../assets/homes/mariehamn-terrace.jpeg';
 import livingRoom from '../assets/homes/mariehamn-living-room.jpeg';
@@ -8,7 +7,9 @@ import bedroomTwo from '../assets/homes/mariehamn-bedroom-2.jpeg';
 import bathroom from '../assets/homes/mariehamn-bathroom.jpeg';
 import droneOverviewWest from '../assets/homes/mariehamn-drone-overview-west.jpg';
 import dronePropertyWest from '../assets/homes/mariehamn-drone-property-west.jpg';
-import droneGardenWest from '../assets/homes/mariehamn-drone-garden-west.jpg';
+import entrance from '../assets/homes/garden-flower.jpeg';
+import sauna from '../assets/homes/sauna.jpeg';
+import bedroomThree from '../assets/homes/mariehamn-bedroom-3.jpeg';
 
 export const property = {
   id: '8ac83c98-0249-4b07-a657-0e29cc101001',
@@ -16,7 +17,7 @@ export const property = {
   title: '4 rum och kök i parhus i Mariehamn',
   location: 'Svärtesgränd, Västernäs, Mariehamn',
   rent: 1290,
-  salePrice: 142500,
+  salePrice: 245000,
   listingTypes: ['sale', 'rent'],
   rooms: '4 rum och kök',
   area: 'cirka 94,1 m²',
@@ -40,8 +41,9 @@ export const property = {
   gallery: [
     { src: droneOverviewWest, alt: 'Drönarvy rakt ovanifrån över parhusområdet i Västernäs' },
     { src: dronePropertyWest, alt: 'Drönarvy över parhuset, den egna uteplatsen och trädgården i västerläge' },
-    { src: droneGardenWest, alt: 'Närmare drönarvy över parhuset och den disponerade delen av tomten' },
-    { src: drone, alt: 'Översiktsbild över parhuset och det lugna bostadsområdet i Västernäs' },
+    { src: entrance, alt: 'Entrén till bostaden med stenläggning och blommande grönska' },
+    { src: sauna, alt: 'Den fristående gemensamma bastun med träpanel, lavar och elaggregat' },
+    { src: bedroomThree, alt: 'Sovrum 3 fotograferat med tidigare möblering; bostaden hyrs ut omöblerad men vissa möbler kan ingå enligt överenskommelse' },
     { src: exterior, alt: 'Parhusets mörka träfasad och den egna gräsmattan' },
     { src: terrace, alt: 'Stenlagd uteplats i västerläge, fotograferad med tidigare möblering; bostaden hyrs ut omöblerad men vissa möbler kan ingå enligt överenskommelse' },
     { src: livingRoom, alt: 'Ljust vardagsrum och matplats i öppen planlösning, fotograferat med tidigare möblering; bostaden hyrs ut omöblerad men vissa möbler kan ingå enligt överenskommelse' },

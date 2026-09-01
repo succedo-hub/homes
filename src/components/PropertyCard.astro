@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { property } from '../data/property';
 import Icon from './Icon.astro';
+const salePrice = new Intl.NumberFormat('sv-SE').format(property.salePrice).replace(/\u00a0/g, ' ');
 ---
 <article class="property-card" data-listing-id={property.id}>
   <a class="card-image" href={`/bostader/${property.slug}`} aria-label={`Se ${property.title}`}>
@@ -12,7 +13,7 @@ import Icon from './Icon.astro';
     <p class="eyebrow">Västernäs · Mariehamn</p>
     <h2><a href={`/bostader/${property.slug}`}>{property.title}</a></h2>
     <div class="card-facts"><span><Icon name="rooms" />4 rum</span><span><Icon name="area" />94,1 m²</span></div>
-    <div class="card-prices"><strong>142 500 €</strong><span>eller 1 290 €/månad</span></div>
+    <div class="card-prices"><strong>{salePrice} €</strong><span>eller 1 290 €/månad</span></div>
     <div class="card-footer"><span>Försäljning eller uthyrning</span><a class="text-link" href={`/bostader/${property.slug}`}>Visa bostaden <Icon name="arrow" /></a></div>
   </div>
 </article>

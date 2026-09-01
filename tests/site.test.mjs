@@ -14,7 +14,7 @@ test('alla centrala sidor är byggda', async () => {
 
 test('objektsidan innehåller verifierade kärnfakta och ansvarsfriskrivning', async () => {
   const html = await read('/bostader/4-rum-och-kok-i-parhus-i-mariehamn/index.html');
-  for (const text of ['94,1 m²', '142 500 €', '1 290 €', 'Till salu', 'Uthyres', 'Bostads Ab Svärtan', '1 januari 2027', 'tre separata sovrum', 'gemensam i bolaget som består av två lägenheter', 'tillgänglig för dialog och visning nu', 'uthyres omöblerad från 1.1.2027', 'Vissa möbler kan ingå i hyran enligt överenskommelse', 'Våningsplan 2', 'uteplatsen ligger i västerläge', 'mindre odlingar och samvaro', 'annonsplattform']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['94,1 m²', '245 000 €', '1 290 €', 'Till salu', 'Uthyres', 'Bostads Ab Svärtan', '1 januari 2027', 'tre separata sovrum', 'gemensam i bolaget som består av två lägenheter', 'tillgänglig för dialog och visning nu', 'uthyres omöblerad från 1.1.2027', 'Vissa möbler kan ingå i hyran enligt överenskommelse', 'Våningsplan 2', 'uteplatsen ligger i västerläge', 'mindre odlingar och samvaro', 'Bostaden är även till salu enligt överenskommelse', 'Entrén till bostaden', 'fristående gemensamma bastun', 'Sovrum 3', 'annonsplattform']) assert.match(html, new RegExp(text, 'i'));
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /action="https:\/\/formspree.io\/f\/xbgjrepy"/);
 });
