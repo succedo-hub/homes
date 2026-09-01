@@ -6,3 +6,4 @@ dist/
 npm-debug.log*
 .env*
 .dev.vars*
+supabase/.temp/
