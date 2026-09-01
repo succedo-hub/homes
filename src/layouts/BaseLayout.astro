@@ -5,7 +5,7 @@ import '../styles/global.css';
 interface Props { title: string; description: string; image?: string; noindex?: boolean; schema?: Record<string, unknown> | Record<string, unknown>[]; }
 const { title, description, image = '/og-default.png', noindex = false, schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const fullTitle = title === 'Åland Homes' ? title : `${title} | Åland Homes`;
+const fullTitle = title === 'Homes.ax' ? title : `${title} | Homes.ax`;
 ---
 <!doctype html>
 <html lang="sv">
@@ -19,7 +19,7 @@ const fullTitle = title === 'Åland Homes' ? title : `${title} | Åland Homes`;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="sv_AX" />
-    <meta property="og:site_name" content="Åland Homes" />
+    <meta property="og:site_name" content="Homes.ax" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

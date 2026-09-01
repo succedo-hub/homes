@@ -1,13 +1,14 @@
-# Åland Homes
+# Homes.ax
 
-Lanseringsbar MVP för Åland Homes – en svensk, statiskt genererad innehållswebbplats för privata bostadsannonser, hyresobjekt och framtida bostadstjänster på Åland.
+Version 1.0 av Homes.ax – en svensk bostadsplattform för privata sälj- och hyresobjekt på Åland.
 
-Åland Homes är en digital annonsplattform och agerar inte som fastighetsmäklare eller part i en affär.
+Homes.ax är en digital annonsplattform och agerar inte som fastighetsmäklare eller part i en affär.
 
 ## Teknisk lösning
 
 - Astro 7 och strikt TypeScript
-- statiskt genererade sidor utan databas, CMS, konton eller klientramverk
+- statiskt genererade sidor med dynamiska, publicerade objekt från Supabase
+- Supabase Postgres, Storage och en validerande Edge Function för annonsinlämning
 - Astro Assets för responsiva WebP-bilder och stabila bilddimensioner
 - Cloudflare Workers Static Assets via Wrangler 4
 - vanlig CSS med ett litet, logobaserat designsystem
@@ -34,6 +35,21 @@ npm run deploy:dry
 ```
 
 `npm test` körs efter ett lyckat bygge och verifierar centrala routes, bostadsfakta, metadata och frånvaro av spårning.
+
+## Supabase och granskningsflöde
+
+Databasmigrationerna finns i `supabase/migrations`. Edge Function-koden finns i `supabase/functions/submit-listing`.
+
+Besökaren skickar ett objekt till Edge Functionen, som alltid sparar det med status `pending`. Den publika Supabase-nyckeln kan endast läsa objekt med status `published` och kan inte skriva direkt till tabellerna. Kontaktuppgifter ligger i `listing_contacts`, som saknar publik läsbehörighet. Bilder lagras i den privata bucketen `listing-images` och kan bara hämtas när det kopplade objektet är publicerat.
+
+Godkännande i version 1.0:
+
+1. Öppna `homes-production` i Supabase.
+2. Kontrollera raden i `listings`, motsvarande kontakt i `listing_contacts` och bilder i Storage.
+3. Sätt `status` till `published` och `published_at` till aktuell tid för att publicera.
+4. Sätt status till `rejected` eller `archived` när objektet inte ska visas.
+
+Administratör och mottagare av Formspree-aviseringar är `anton.strandvik@gmail.com`.
 
 ## Innehåll och bilder
 
@@ -78,7 +94,7 @@ För slutlig domän konfigureras en Custom Domain i Cloudflare för Worker-proje
 
 ## Kända begränsningar
 
-- endast ett bostadsobjekt är publicerat
-- publicering och intresseanmälan sker via `mailto:`
+- annonsgodkännande görs tills vidare i Supabase-panelen
+- dynamiska objektsidor använder en frågeparameter och är därför märkta `noindex` i version 1.0
 - tjänsteleverantörer, priser, omdömen och statistik publiceras inte ännu
 - ingen analys eller icke-nödvändiga cookies används

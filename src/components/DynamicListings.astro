@@ -1,0 +1,49 @@
+---
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+<div class:list={['database-listings', { compact }]} data-dynamic-listings data-limit={compact ? '3' : '24'} aria-live="polite"></div>
+
+<script>
+  import { supabase } from '../lib/supabase';
+
+  type Listing = {
+    id: string; slug: string; title: string; listing_types: string[]; property_type: string;
+    street_address: string; district: string | null; locality: string; rooms: number;
+    living_area: number; sale_price: number | null; monthly_rent: number | null;
+    listing_images: Array<{ storage_path: string | null; external_url: string | null; alt_text: string; sort_order: number }>;
+  };
+
+  const money = new Intl.NumberFormat('sv-FI', { maximumFractionDigits: 0 });
+  const labels: Record<string, string> = { apartment: 'Lägenhet', house: 'Villa', terraced_house: 'Radhus', semi_detached: 'Parhus', cottage: 'Fritidshus', plot: 'Tomt', other: 'Bostad' };
+  const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character] ?? character);
+
+  const imageUrl = async (listing: Listing) => {
+    const image = [...(listing.listing_images ?? [])].sort((a, b) => a.sort_order - b.sort_order)[0];
+    if (!image) return '/og-default.png';
+    if (image.external_url) return image.external_url;
+    if (!image.storage_path) return '/og-default.png';
+    const { data } = await supabase.storage.from('listing-images').createSignedUrl(image.storage_path, 3600);
+    return data?.signedUrl ?? '/og-default.png';
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-dynamic-listings]').forEach(async (container) => {
+    const existingIds = new Set(Array.from(document.querySelectorAll<HTMLElement>('[data-listing-id]')).map((item) => item.dataset.listingId));
+    const limit = Number(container.dataset.limit ?? 24);
+    const { data, error } = await supabase.from('listings').select('id,slug,title,listing_types,property_type,street_address,district,locality,rooms,living_area,sale_price,monthly_rent,listing_images(storage_path,external_url,alt_text,sort_order)').eq('status', 'published').order('published_at', { ascending: false }).limit(limit);
+    if (error) {
+      container.innerHTML = '<p class="database-note">Fler bostäder kunde inte hämtas just nu.</p>';
+      return;
+    }
+    const listings = (data as Listing[]).filter((listing) => !existingIds.has(listing.id));
+    if (!listings.length) return;
+    const cards = await Promise.all(listings.map(async (listing) => {
+      const url = `/bostader/objekt?id=${encodeURIComponent(listing.id)}`;
+      const image = await imageUrl(listing);
+      const badges = listing.listing_types.map((type) => type === 'sale' ? 'Till salu' : 'Uthyres').join(' · ');
+      const prices = [listing.sale_price ? `${money.format(listing.sale_price)} €` : '', listing.monthly_rent ? `${money.format(listing.monthly_rent)} €/mån` : ''].filter(Boolean).join(' · ');
+      return `<article class="listing-tile" data-listing-id="${escapeHtml(listing.id)}"><a class="listing-tile-image" href="${url}"><img src="${escapeHtml(image)}" alt="${escapeHtml(listing.listing_images?.[0]?.alt_text || listing.title)}" loading="lazy"><span class="status">${escapeHtml(badges)}</span></a><div class="listing-tile-body"><span class="listing-type">${escapeHtml(labels[listing.property_type] || 'Bostad')}</span><h3><a href="${url}">${escapeHtml(listing.title)}</a></h3><p>${escapeHtml([listing.district, listing.locality].filter(Boolean).join(' · '))}</p><div class="listing-tile-meta"><span>${escapeHtml(listing.rooms)} rum</span><span>${escapeHtml(listing.living_area)} m²</span></div><strong>${escapeHtml(prices)}</strong></div></article>`;
+    }));
+    container.innerHTML = cards.join('');
+  });
+</script>

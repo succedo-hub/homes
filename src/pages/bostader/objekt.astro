@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Bostadsannons" description="Publicerad bostadsannons på Homes.ax" noindex={true}>
+  <div class="container breadcrumb"><a href="/bostader">Bostäder</a><span aria-hidden="true">/</span><span>Objekt</span></div>
+  <div class="container dynamic-property" data-dynamic-property aria-live="polite"><p class="lead">Hämtar bostaden…</p></div>
+</BaseLayout>
+
+<script>
+  import { supabase } from '../../lib/supabase';
+  const root = document.querySelector<HTMLElement>('[data-dynamic-property]');
+  const id = new URLSearchParams(location.search).get('id');
+  const money = new Intl.NumberFormat('sv-FI', { maximumFractionDigits: 0 });
+  const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character] ?? character);
+  if (!id || !/^[0-9a-f-]{36}$/i.test(id)) {
+    root!.innerHTML = '<section class="page-hero"><h1>Objektet hittades inte</h1><p class="lead">Kontrollera länken eller gå tillbaka till bostäderna.</p><a class="button" href="/bostader">Se bostäder</a></section>';
+  } else {
+    const { data: listing, error } = await supabase.from('listings').select('id,title,listing_types,property_type,street_address,district,locality,rooms,bedrooms,living_area,total_area,floor,construction_year,description,features,sale_price,monthly_rent,available_from,availability_note,listing_images(storage_path,external_url,alt_text,sort_order)').eq('status', 'published').eq('id', id).maybeSingle();
+    if (error || !listing) {
+      root!.innerHTML = '<section class="page-hero"><h1>Objektet hittades inte</h1><p class="lead">Annonsen kan ha avpublicerats.</p><a class="button" href="/bostader">Se bostäder</a></section>';
+    } else {
+      const images = await Promise.all([...(listing.listing_images ?? [])].sort((a, b) => a.sort_order - b.sort_order).map(async (image) => {
+        if (image.external_url) return { ...image, url: image.external_url };
+        if (!image.storage_path) return null;
+        const { data } = await supabase.storage.from('listing-images').createSignedUrl(image.storage_path, 3600);
+        return data?.signedUrl ? { ...image, url: data.signedUrl } : null;
+      }));
+      const validImages = images.filter(Boolean) as Array<{ url: string; alt_text: string }>;
+      const badges = listing.listing_types.map((type: string) => type === 'sale' ? 'Till salu' : 'Uthyres').join(' · ');
+      const prices = [listing.sale_price ? `<strong>${money.format(listing.sale_price)} €</strong><span>försäljningspris</span>` : '', listing.monthly_rent ? `<strong>${money.format(listing.monthly_rent)} €</strong><span>per månad</span>` : ''].filter(Boolean).join('');
+      root!.innerHTML = `<section class="property-heading"><div><span class="status static">${escapeHtml(badges)}</span><h1>${escapeHtml(listing.title)}</h1><p class="location">${escapeHtml([listing.street_address, listing.district, listing.locality].filter(Boolean).join(', '))}</p></div><div class="price dynamic-prices">${prices}</div></section>${validImages.length ? `<section class="dynamic-gallery">${validImages.map((image, index) => `<img class="${index === 0 ? 'main' : ''}" src="${escapeHtml(image.url)}" alt="${escapeHtml(image.alt_text)}">`).join('')}</section>` : ''}<section class="property-layout section"><div class="property-main"><div class="key-facts"><span><strong>${escapeHtml(listing.rooms)} rum</strong></span><span><strong>${escapeHtml(listing.living_area)} m²</strong></span><span><strong>${escapeHtml(listing.floor ? `Plan ${listing.floor}` : 'Plan ej angivet')}</strong></span><span><strong>${escapeHtml(listing.available_from || 'Enligt överenskommelse')}</strong></span></div><div class="prose"><h2>Om bostaden</h2>${escapeHtml(listing.description).split('\n').map((paragraph) => `<p>${paragraph}</p>`).join('')}<h2>Fakta</h2><dl class="dynamic-facts"><div><dt>Boyta</dt><dd>${escapeHtml(listing.living_area)} m²</dd></div><div><dt>Sovrum</dt><dd>${escapeHtml(listing.bedrooms ?? 'Ej angivet')}</dd></div><div><dt>Byggår</dt><dd>${escapeHtml(listing.construction_year ?? 'Ej angivet')}</dd></div></dl>${listing.features?.length ? `<h2>Egenskaper</h2><ul>${listing.features.map((feature: string) => `<li>${escapeHtml(feature)}</li>`).join('')}</ul>` : ''}</div></div><aside class="contact-card"><p class="eyebrow">Intresserad?</p><h2>Kontakta annonsören</h2><p>Skicka din förfrågan så förmedlas den vidare för fortsatt dialog.</p><a class="button full" href="mailto:info@homes.ax?subject=${encodeURIComponent(`Intresse för ${listing.title}`)}">Skicka intresse</a><p class="mini-disclaimer">Homes.ax är en annonsplattform och är inte part i affären.</p></aside></section>`;
+    }
+  }
+</script>

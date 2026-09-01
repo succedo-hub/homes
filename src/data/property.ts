@@ -11,16 +11,19 @@ import dronePropertyWest from '../assets/homes/mariehamn-drone-property-west.jpg
 import droneGardenWest from '../assets/homes/mariehamn-drone-garden-west.jpg';
 
 export const property = {
+  id: '8ac83c98-0249-4b07-a657-0e29cc101001',
   slug: '4-rum-och-kok-i-parhus-i-mariehamn',
   title: '4 rum och kök i parhus i Mariehamn',
   location: 'Svärtesgränd, Västernäs, Mariehamn',
   rent: 1290,
+  salePrice: 142500,
+  listingTypes: ['sale', 'rent'],
   rooms: '4 rum och kök',
   area: 'cirka 94,1 m²',
   totalArea: '97 m² inklusive förråd',
   bedrooms: 3,
   available: 'Tillgänglig för dialog och visning nu. Uthyres från 1 januari 2027 eller enligt överenskommelse.',
-  tenure: 'Hyresobjekt · kan även vara till salu enligt överenskommelse',
+  tenure: 'Till salu och för uthyrning',
   intro: 'Ett bekvämt boende i ett plan med ljusa sociala ytor, tre separata sovrum, egen uteplats med bastu (gemensam i bolaget som består av två lägenheter) och ett lugnt läge vid återvändsgränd i Västernäs Mariehamn.',
   facts: [
     ['Bolag', 'Bostads Ab Svärtan i Mariehamn'],

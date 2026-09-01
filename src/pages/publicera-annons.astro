@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Publicera annons" description="Skicka in en bostadsannons till Homes.ax. Objektet sparas säkert och granskas före publicering.">
+  <section class="page-hero container publish-hero"><p class="eyebrow">Publicera annons</p><h1>Ge din bostad en tydlig plats.</h1><p class="lead">Sälj, hyr ut eller välj båda. Annonsen sparas som väntar på granskning och blir synlig först efter ett manuellt godkännande.</p></section>
+  <section class="section section-soft">
+    <div class="container publish-layout">
+      <aside class="publish-aside"><p class="eyebrow">Så fungerar det</p><ol><li><strong>Beskriv bostaden</strong><span>Fyll i fakta, pris och kontaktuppgifter.</span></li><li><strong>Ladda upp bilder</strong><span>Upp till tio bilder, högst 8 MB per bild.</span></li><li><strong>Vi granskar</strong><span>Annonsen publiceras först när innehållet kontrollerats.</span></li></ol><p class="form-note">Homes.ax förmedlar inte bostaden och är inte part i en eventuell affär.</p></aside>
+      <form class="publish-form" id="publish-form" novalidate>
+        <div class="form-section"><p class="form-step">01 · Annonsens typ</p><h2>Vad vill du göra?</h2><fieldset class="choice-grid" data-listing-types><legend class="sr-only">Välj annonstyp</legend><label><input type="checkbox" name="listing_type" value="sale" /><span>Till salu</span></label><label><input type="checkbox" name="listing_type" value="rent" /><span>För uthyrning</span></label></fieldset></div>
+
+        <div class="form-section"><p class="form-step">02 · Bostaden</p><h2>Grunduppgifter</h2><div class="form-grid">
+          <label><span>Rubrik *</span><input name="title" required minlength="8" maxlength="140" placeholder="Till exempel 3 rum och kök i Mariehamn" /></label>
+          <label><span>Bostadstyp *</span><select name="property_type" required><option value="">Välj</option><option value="apartment">Lägenhet</option><option value="house">Villa</option><option value="terraced_house">Radhus</option><option value="semi_detached">Parhus</option><option value="cottage">Fritidshus</option><option value="plot">Tomt</option><option value="other">Annat</option></select></label>
+          <label><span>Gatuadress *</span><input name="street_address" required maxlength="160" autocomplete="street-address" /></label>
+          <label><span>Område</span><input name="district" maxlength="100" placeholder="Till exempel Västernäs" /></label>
+          <label><span>Ort *</span><input name="locality" required maxlength="100" value="Mariehamn" autocomplete="address-level2" /></label>
+          <label><span>Antal rum *</span><input name="rooms" required type="number" min="0.5" max="30" step="0.5" inputmode="decimal" /></label>
+          <label><span>Sovrum</span><input name="bedrooms" type="number" min="0" max="20" step="1" inputmode="numeric" /></label>
+          <label><span>Boyta, m² *</span><input name="living_area" required type="number" min="1" max="10000" step="0.1" inputmode="decimal" /></label>
+          <label><span>Total yta, m²</span><input name="total_area" type="number" min="1" max="10000" step="0.1" inputmode="decimal" /></label>
+          <label><span>Våningsplan</span><input name="floor" maxlength="30" /></label>
+          <label><span>Byggår</span><input name="construction_year" type="number" min="1700" max="2200" inputmode="numeric" /></label>
+          <label><span>Tillgänglig från</span><input name="available_from" type="date" /></label>
+        </div></div>
+
+        <div class="form-section"><p class="form-step">03 · Pris och beskrivning</p><h2>Villkor och presentation</h2><div class="form-grid">
+          <label data-sale-price><span>Försäljningspris, €</span><input name="sale_price" type="number" min="1" step="1" inputmode="numeric" /></label>
+          <label data-rent-price><span>Månadshyra, €</span><input name="monthly_rent" type="number" min="1" step="1" inputmode="numeric" /></label>
+        </div><label><span>Tillgänglighet</span><input name="availability_note" maxlength="500" placeholder="Till exempel tillgänglig enligt överenskommelse" /></label><label><span>Beskrivning *</span><textarea name="description" required minlength="80" maxlength="8000" rows="9" placeholder="Beskriv planlösning, skick, läge och sådant en intressent behöver känna till."></textarea></label><label><span>Egenskaper</span><input name="features" maxlength="1000" placeholder="Separera med kommatecken, till exempel balkong, bastu, fiber" /></label></div>
+
+        <div class="form-section"><p class="form-step">04 · Bilder</p><h2>Visa bostaden</h2><label class="file-drop"><span>Välj upp till 10 bilder</span><input name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple /><small>JPG, PNG eller WebP · högst 8 MB per bild</small></label><div class="file-list" data-file-list></div></div>
+
+        <div class="form-section"><p class="form-step">05 · Kontakt</p><h2>Vem skickar in annonsen?</h2><div class="form-grid"><label><span>Namn *</span><input name="contact_name" required maxlength="120" autocomplete="name" /></label><label><span>E-post *</span><input name="contact_email" required type="email" maxlength="320" autocomplete="email" /></label><label><span>Telefon</span><input name="contact_phone" type="tel" maxlength="60" autocomplete="tel" /></label></div><label class="consent-row"><input name="privacy_consent" type="checkbox" required /><span>Jag godkänner att uppgifterna behandlas för granskning och publicering enligt <a href="/integritet">integritetspolicyn</a>. *</span></label><label class="honeypot" aria-hidden="true">Webbplats<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+
+        <div class="form-submit"><button class="button" type="submit">Skicka för granskning</button><p class="form-status" role="status" data-form-status></p></div>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { supabase } from '../lib/supabase';
+  const form = document.querySelector<HTMLFormElement>('#publish-form');
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+  const fileList = document.querySelector<HTMLElement>('[data-file-list]');
+  const fileInput = form?.elements.namedItem('images') as HTMLInputElement | null;
+  const checks = Array.from(form?.querySelectorAll<HTMLInputElement>('input[name="listing_type"]') ?? []);
+  const saleInput = form?.elements.namedItem('sale_price') as HTMLInputElement | null;
+  const rentInput = form?.elements.namedItem('monthly_rent') as HTMLInputElement | null;
+
+  const updateRequirements = () => {
+    saleInput?.toggleAttribute('required', checks.some((item) => item.value === 'sale' && item.checked));
+    rentInput?.toggleAttribute('required', checks.some((item) => item.value === 'rent' && item.checked));
+  };
+  checks.forEach((check) => check.addEventListener('change', updateRequirements));
+  fileInput?.addEventListener('change', () => {
+    const files = Array.from(fileInput.files ?? []);
+    if (fileList) fileList.textContent = files.length ? `${files.length} bild${files.length === 1 ? '' : 'er'} vald${files.length === 1 ? '' : 'a'}` : '';
+  });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    updateRequirements();
+    if (!checks.some((item) => item.checked)) { status!.textContent = 'Välj om bostaden är till salu, för uthyrning eller båda.'; return; }
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const files = Array.from(fileInput?.files ?? []);
+    if (files.length > 10 || files.some((file) => file.size > 8_388_608)) { status!.textContent = 'Välj högst 10 bilder och kontrollera att varje bild är högst 8 MB.'; return; }
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    button!.disabled = true;
+    status!.textContent = 'Sparar annonsen…';
+    const data = new FormData(form);
+    const value = (name: string) => String(data.get(name) ?? '').trim();
+    const numeric = (name: string) => value(name) ? Number(value(name)) : null;
+    const payload = {
+      listingTypes: checks.filter((item) => item.checked).map((item) => item.value), propertyType: value('property_type'), title: value('title'), streetAddress: value('street_address'), district: value('district'), locality: value('locality'), rooms: numeric('rooms'), bedrooms: numeric('bedrooms'), livingArea: numeric('living_area'), totalArea: numeric('total_area'), floor: value('floor'), constructionYear: numeric('construction_year'), description: value('description'), features: value('features').split(',').map((item) => item.trim()).filter(Boolean), salePrice: numeric('sale_price'), monthlyRent: numeric('monthly_rent'), availableFrom: value('available_from'), availabilityNote: value('availability_note'), contactName: value('contact_name'), contactEmail: value('contact_email'), contactPhone: value('contact_phone'), privacyConsent: data.get('privacy_consent') === 'on', website: value('website'), images: files.map((file) => ({ type: file.type, size: file.size })),
+    };
+    const { data: result, error } = await supabase.functions.invoke('submit-listing', { body: payload });
+    if (error || !result?.ok) { status!.textContent = result?.error ?? 'Annonsen kunde inte sparas. Försök igen.'; button!.disabled = false; return; }
+    try {
+      for (let index = 0; index < files.length; index += 1) {
+        const upload = result.uploads[index];
+        const file = files[index];
+        if (!upload || !file) throw new Error('En uppladdningsadress saknas.');
+        const { error: uploadError } = await supabase.storage.from('listing-images').uploadToSignedUrl(upload.path, upload.token, file, { contentType: file.type });
+        if (uploadError) throw uploadError;
+      }
+    } catch {
+      status!.textContent = 'Annonsen sparades, men någon bild kunde inte laddas upp. Vi kontaktar dig vid behov.';
+      button!.disabled = false;
+      return;
+    }
+    fetch('https://formspree.io/f/xbgjrepy', { method: 'POST', headers: { Accept: 'application/json' }, body: new URLSearchParams({ _subject: 'Ny annons väntar på granskning', formulartyp: 'annons', annons_id: result.listingId, namn: payload.contactName, email: payload.contactEmail }) }).catch(() => undefined);
+    form.reset();
+    if (fileList) fileList.textContent = '';
+    status!.innerHTML = '<strong>Tack! Annonsen är sparad och väntar på granskning.</strong> Vi kontaktar dig om något behöver kompletteras.';
+    status!.classList.add('success');
+    button!.disabled = false;
+  });
+</script>

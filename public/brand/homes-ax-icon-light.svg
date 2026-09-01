@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 200" role="img" aria-labelledby="title">
+  <title id="title">Homes.ax symbol</title>
+  <g fill="none" stroke="#F4F0E7" stroke-width="10" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M128 78 96 51C62 23 18 45 18 94c0 30 20 51 54 70v-42l56-44 56 44v42c34-19 54-40 54-70 0-49-44-71-78-43Z"/>
+    <path d="M94 180v-38l34-27 34 27v38"/>
+  </g>
+</svg>

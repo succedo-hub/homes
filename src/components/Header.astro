@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/brand/aland-homes-original.png';
 import Icon from './Icon.astro';
 const path = Astro.url.pathname;
 const links = [
@@ -10,13 +8,14 @@ const links = [
 <header class="site-header">
   <a class="skip-link" href="#main">Hoppa till innehållet</a>
   <div class="header-inner container">
-    <a class="brand" href="/" aria-label="Åland Homes – startsida">
-      <Image src={logo} alt="Åland Homes" width={310} format="webp" quality={88} loading="eager" />
+    <a class="brand" href="/" aria-label="Homes.ax – startsida">
+      <img src="/brand/homes-ax-icon-light.svg" alt="" width="46" height="36" />
+      <span>Homes.ax</span>
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav"><Icon name="menu" /> <span>Meny</span></button>
     <nav id="nav" aria-label="Huvudmeny">
       {links.map(([href, label]) => <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
-      <a class="button button-small" href="mailto:info@homes.ax?subject=Jag%20vill%20publicera%20en%20annons">Publicera annons</a>
+      <a class="button button-small button-sage" href="/publicera-annons">Publicera annons</a>
     </nav>
   </div>
 </header>
