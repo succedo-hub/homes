@@ -42,3 +42,18 @@ test('startsidan har grundläggande SEO och ingen spårning', async () => {
   assert.match(html, /Publicera annons/);
   assert.match(html, /homes-ax-icon-light\.svg/);
 });
+
+test('plattformens roll och kostnadsfria drift är tydliga', async () => {
+  const home = await read('/index.html');
+  const about = await read('/om-oss/index.html');
+  const terms = await read('/villkor/index.html');
+  for (const html of [home, about, terms]) {
+    assert.match(html, /kostnadsfri/i);
+    assert.match(html, /inte fastighetsmäklare|bedriver inte fastighetsmäklarverksamhet/i);
+    assert.match(html, /provision/i);
+    assert.match(html, /Sprint Nordic/i);
+    assert.match(html, /https:\/\/www\.sprint\.ax/);
+  }
+  assert.match(terms, /inte i syfte att få inkomst eller annan ekonomisk fördel/i);
+  assert.match(terms, /teknisk meddelandefunktion/i);
+});
