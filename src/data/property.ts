@@ -25,7 +25,7 @@ export const property = {
   bedrooms: 3,
   available: 'Inflyttning från 1 december 2026 eller enligt överenskommelse.',
   tenure: 'Till salu och för uthyrning',
-  intro: 'Ett bekvämt boende i ett plan med ljusa sociala ytor, tre separata sovrum, egen uteplats med bastu (gemensam i bolaget som består av två lägenheter) och ett lugnt läge vid återvändsgränd i Västernäs Mariehamn.',
+  intro: 'Ett bekvämt boende i ett plan med ljusa sociala ytor, tre separata sovrum, egen uteplats och ett lugnt läge vid återvändsgränd i Västernäs, Mariehamn. I bolaget, som består av två lägenheter, finns en gemensam fristående bastu.',
   facts: [
     ['Bolag', 'Bostads Ab Svärtan i Mariehamn'],
     ['Bolagets ekonomi', 'Skuldfritt bolag'],

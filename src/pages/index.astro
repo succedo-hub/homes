@@ -5,46 +5,23 @@ import PropertyCard from '../components/PropertyCard.astro';
 import DynamicListings from '../components/DynamicListings.astro';
 import Icon from '../components/Icon.astro';
 import { property } from '../data/property';
-const schema = {
-  '@context': 'https://schema.org', '@type': 'WebSite', name: 'Homes.ax', url: 'https://homes.ax',
-  description: 'Digital annonsplattform för bostäder på Åland.'
-};
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Homes.ax', url: 'https://homes.ax', description: 'Bostäder och digitala tjänster för boende på Åland.' },
+  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Succedo Invest & Consulting Ab', taxID: '2496398-7', url: 'https://homes.ax', email: 'info@homes.ax', address: { '@type': 'PostalAddress', addressLocality: 'Mariehamn', addressCountry: 'AX' } }
+];
 ---
-<BaseLayout title="Homes.ax" description="Hitta bostäder till salu och för uthyrning på Åland eller skicka in din egen annons för granskning." schema={schema}>
-  <section class="home-hero">
-    <div class="container home-hero-grid">
-      <div class="home-hero-copy">
-        <p class="eyebrow light">Hem och bostäder på Åland</p>
-        <h1>Hitta hem.<br />Skapa synlighet.</h1>
-        <p>Bostäder till salu och för uthyrning, samlade på ett ställe.</p>
-        <div class="button-row"><a class="button button-light" href="/bostader">Utforska bostäder <Icon name="arrow" /></a><a class="button button-ghost-light" href="/publicera-annons">Publicera annons</a></div>
-        <div class="hero-assurances"><span>✓ Granskade annonser</span><span>⌖ Lokalt på Åland</span><span>♡ Direktkontakt</span></div>
-      </div>
-      <div class="home-hero-visual">
-        <Image src={property.gallery[0].src} alt="Bostadsområde i Västernäs, Mariehamn, fotograferat från luften" widths={[720, 1100, 1500]} sizes="(max-width: 900px) 100vw, 50vw" format="webp" quality={86} loading="eager" fetchpriority="high" />
-        <span class="coordinate">60.0973° N · 19.9346° E</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="service-ribbon">
-    <div class="container service-ribbon-grid">
-      <article><span>▱</span><h2>Fotografering</h2><p>Professionella bilder som lyfter fram ditt hem.</p></article>
-      <article><span>◫</span><h2>Marknadsföring</h2><p>Tydlig presentation och rätt kanaler.</p></article>
-      <article><span>⌂</span><h2>Energideklaration</h2><p>Kommande stöd genom utvalda partners.</p></article>
-      <article><span>✎</span><h2>Köpvittne</h2><p>Information om oberoende hjälp vid en trygg affär.</p></article>
-    </div>
-  </section>
-
-  <section class="section section-soft">
-    <div class="container">
-      <div class="section-heading-row"><div><p class="eyebrow">Aktuellt</p><h2>Utvalda bostäder på Åland</h2></div><a class="text-link" href="/bostader">Se alla bostäder <Icon name="arrow" /></a></div>
-      <PropertyCard />
-      <DynamicListings compact={true} />
-    </div>
-  </section>
-
-  <section class="section cta-split">
-    <div class="container cta-split-inner"><div><p class="eyebrow">Redo att publicera?</p><h2>Låt ditt objekt få en tydlig plats.</h2><p>Skicka in uppgifterna kostnadsfritt. Annonsen granskas innan den blir synlig.</p></div><a class="button" href="/publicera-annons">Publicera annons <Icon name="arrow" /></a></div>
-  </section>
+<BaseLayout title="Homes.ax | Bostäder och boende på Åland" description="Upptäck bostäder på Åland, publicera en annons och utforska digitala tjänster för bostadsaktiebolag. En lokal plats för livet kring hemmet." schema={schema}>
+  <section class="home-hero"><div class="container home-hero-grid">
+    <div class="home-hero-copy"><p class="eyebrow light">Bostäder och boende på Åland</p><h1>Hitta hem<br />på Åland.</h1><p>Upptäck bostäder till salu och för uthyrning, visa upp din egen bostad och hitta tjänster som gör livet kring hemmet enklare.</p><div class="button-row"><a class="button button-light" href="/bostader">Se bostäder <Icon name="arrow" /></a><a class="button button-ghost-light" href="/publicera-annons">Publicera annons</a></div><div class="hero-assurances"><span>Lokalt på Åland</span><span>Direktkontakt med annonsören</span><span>Kostnadsfri bostadsannons</span></div></div>
+    <div class="home-hero-visual"><Image src={property.gallery[0].src} alt="Bostadsområde i Västernäs, Mariehamn, fotograferat från luften" widths={[720, 1100, 1500]} sizes="(max-width: 900px) 100vw, 50vw" format="webp" quality={86} loading="eager" fetchpriority="high" /><span class="coordinate">60.0973° N · 19.9346° E</span></div>
+  </div></section>
+  <section class="local-note"><div class="container"><p>En lokal plats för tydliga bostadsannonser. Du tar kontakt med annonsören direkt. Publicering av bostadsannonser är kostnadsfri.</p><a class="text-link" href="/om-oss">Så fungerar Homes.ax <Icon name="arrow" /></a></div></section>
+  <section class="section section-soft"><div class="container"><div class="section-heading-row"><div><p class="eyebrow">Aktuellt</p><h2>En bostad med två möjligheter</h2></div><a class="text-link" href="/bostader">Se alla bostäder <Icon name="arrow" /></a></div><PropertyCard /><DynamicListings compact={true} /></div></section>
+  <section class="section company-intro"><div class="container company-intro-grid">
+    <div><p class="eyebrow">Homes Bolag · Under utveckling</p><h2>Ett enklare vardagsarbete för bostadsaktiebolag</h2><p class="lead">Vi utvecklar en digital arbetsyta för ekonomi, dokument och styrelsearbete. Inför den första piloten söker vi bostadsaktiebolag och disponenter som vill hjälpa oss att forma tjänsten.</p><a class="button" href="/for-bostadsaktiebolag">Utforska Homes Bolag <Icon name="arrow" /></a></div>
+    <div class="product-preview" aria-label="Fiktiv produktvy under utveckling"><div class="preview-top"><span>Homes Bolag</span><strong>Produktvy under utveckling</strong></div><p>Bostads Ab Exempel</p><div class="preview-metrics"><div><small>Att hantera</small><strong>4</strong></div><div><small>Nästa styrelsemöte</small><strong>18 nov</strong></div><div><small>Dokument</small><strong>36</strong></div></div><ul><li><span>Verifikat att kontrollera</span><strong>2</strong></li><li><span>Beslut att följa upp</span><strong>1</strong></li><li><span>Årshjul: budgetarbete</span><em>Pågår</em></li></ul></div>
+  </div></section>
+  <section class="section service-overview"><div class="container"><div class="intro-grid"><div><p class="eyebrow">Tjänster kring hemmet</p><h2>Rätt hjälp, när den är redo.</h2></div><div><p class="lead">Här samlar vi bostadsnära tjänster från lokala aktörer. Varje leverantör ansvarar för sin egen tjänst och sina villkor. Utbudet byggs upp stegvis.</p><a class="text-link" href="/tjanster">Se vad som planeras <Icon name="arrow" /></a></div></div></div></section>
+  <section class="section partner-band"><div class="container partner-band-inner"><div><p class="eyebrow light">Samarbeta med oss</p><h2>Teknik möter lokal sakkunskap.</h2><p>Arbetar ni med bostadsaktiebolag, registrerad fastighetsmäklarverksamhet eller tjänster kring boendet på Åland? Vi söker samarbeten inför nästa utvecklingsfas.</p></div><a class="button button-light" href="/samarbeta">Samarbeta med oss <Icon name="arrow" /></a></div></section>
+  <section class="section cta-split"><div class="container cta-split-inner"><div><p class="eyebrow">Har du en bostad att visa?</p><h2>Ge den en tydlig plats.</h2><p>Skicka in uppgifterna kostnadsfritt. Annonsen innehållsgranskas före publicering.</p></div><a class="button" href="/publicera-annons">Publicera annons <Icon name="arrow" /></a></div></section>
 </BaseLayout>

@@ -5,7 +5,7 @@ import '../styles/global.css';
 interface Props { title: string; description: string; image?: string; noindex?: boolean; schema?: Record<string, unknown> | Record<string, unknown>[]; }
 const { title, description, image = '/og-default.png', noindex = false, schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const fullTitle = title === 'Homes.ax' ? title : `${title} | Homes.ax`;
+const fullTitle = title.includes('Homes.ax') ? title : `${title} | Homes.ax`;
 ---
 <!doctype html>
 <html lang="sv">

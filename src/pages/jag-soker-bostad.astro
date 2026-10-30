@@ -1,13 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactForm from '../components/ContactForm.astro';
 ---
-<BaseLayout title="Jag söker bostad" description="Berätta vilket boende du söker på Åland och lämna dina kontaktuppgifter till Homes.ax.">
-  <section class="page-hero container"><p class="eyebrow">Jag söker bostad</p><h1>Berätta vad du letar efter</h1><p class="lead">Lämna dina kontaktuppgifter och beskriv bostaden du söker. Vi sparar din förfrågan och kan kontakta dig om relevant information blir tillgänglig.</p></section>
-  <section class="section section-soft">
-    <div class="container form-layout">
-      <div><p class="eyebrow">Bostadsförfrågan</p><h2>Vi vill förstå dina behov</h2><p>Ju tydligare du beskriver område, storlek, tidpunkt och budget, desto lättare är det att förstå vad du söker. Formuläret är inte en köplats eller garanti om erbjudande.</p></div>
-      <ContactForm subject="Ny bostadsförfrågan via Homes.ax" context="bostadssökande" submitLabel="Skicka bostadsförfrågan" showPreferences={true} />
-    </div>
-  </section>
+<BaseLayout title="Sök bostad på Åland | Homes.ax" description="Se aktuella bostadsannonser på Åland och kontakta annonsören direkt via objektets sida.">
+  <section class="page-hero container"><p class="eyebrow">Söker du bostad?</p><h1>Se vad som är aktuellt just nu.</h1><p class="lead">Söker du bostad på Åland? Se aktuella annonser och kontakta annonsören via objektets sida. Vi utvecklar fler sätt att hålla koll på nya bostäder.</p><a class="button" href="/bostader">Se aktuella bostäder</a></section>
+  <section class="section section-soft"><div class="container split-copy"><div><p class="eyebrow">Direktkontakt</p><h2>Du väljer bostad och tar kontakt.</h2></div><div class="prose"><p>Homes.ax har ingen väntelista och gör ingen manuell matchning. Varje publicerad bostad visar den aktuella kontaktvägen till annonsören.</p><p>När en självbetjänad bevakning finns kommer den att presenteras här.</p></div></div></section>
 </BaseLayout>
