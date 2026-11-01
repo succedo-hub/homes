@@ -36,22 +36,30 @@ test('annonsflödet bevaras och förklarar innehållsgranskningen', async () => 
   assert.match(html, /rätt att använda bilderna/i);
 });
 
-test('startsidan visar bostäder, Homes Bolag och partneringång', async () => {
+test('startsidan visar bostäder, Koti/bo och partneringång', async () => {
   const html = await read('/index.html');
-  for (const text of ['Hitta hem', 'Publicera annons', 'Homes Bolag', 'Under utveckling', 'Samarbeta med oss', 'Till salu', 'Uthyres']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['Hem på Åland', 'Publicera annons', 'Tjänster för bostadsaktiebolag', 'Koti/bo', 'Samarbeta med oss', 'Till salu', 'Uthyres']) assert.match(html, new RegExp(text, 'i'));
+  assert.doesNotMatch(html, /under utveckling|pilot|planeras/i);
   assert.match(html, /rel="canonical"/);
   assert.match(html, /property="og:title"/);
   assert.doesNotMatch(html, /googletagmanager|analytics/i);
 });
 
-test('pilot- och partnersidor är tydliga och pilotformuläret fungerar tekniskt', async () => {
-  const pilot = await read('/for-bostadsaktiebolag/index.html');
+test('bolags- och partnersidor är tydliga och kontaktformuläret fungerar tekniskt', async () => {
+  const company = await read('/for-bostadsaktiebolag/index.html');
   const partner = await read('/samarbeta/index.html');
-  for (const text of ['Produktvy under utveckling', 'Alla uppgifter i vyn är fiktiva', 'Ekonomi', 'Dokument', 'Styrelse och disponent']) assert.match(pilot, new RegExp(text, 'i'));
-  for (const field of ['roll', 'bolag', 'namn', 'email', 'meddelande']) assert.match(pilot, new RegExp(`name="${field}"`));
-  assert.match(pilot, /action="https:\/\/formspree.io\/f\/xbgjrepy"/);
-  assert.match(partner, /registrerad fastighetsmäklarrörelse/i);
+  for (const text of ['Koti/bo', 'Ekonomi och bokföringsunderlag', 'Lägenheter och vederlag', 'Styrelsearbete', 'Disponenttjänster', 'Administration', 'Bokföring']) assert.match(company, new RegExp(text, 'i'));
+  assert.doesNotMatch(company, /under utveckling|pilot|planerat för/i);
+  for (const field of ['roll', 'bolag', 'namn', 'email', 'meddelande']) assert.match(company, new RegExp(`name="${field}"`));
+  assert.match(company, /action="https:\/\/formspree.io\/f\/xbgjrepy"/);
+  assert.match(partner, /bostadsaktiebolag/i);
   assert.match(partner, /mailto:info@homes.ax/i);
+});
+
+test('tjänstesidan visar tillgängliga kategorier utan planeringsetiketter', async () => {
+  const html = await read('/tjanster/index.html');
+  for (const text of ['Städning', 'Fotografering', 'Offentligt köpvittne', 'Energideklaration', 'Erbjuder ni en relevant tjänst']) assert.match(html, new RegExp(text, 'i'));
+  assert.doesNotMatch(html, /Planeras|Under utveckling/i);
 });
 
 test('juridisk part, roller och differentierad affärsmodell är konsekventa', async () => {
