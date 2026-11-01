@@ -4,8 +4,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PropertyCard from '../components/PropertyCard.astro';
 import DynamicListings from '../components/DynamicListings.astro';
 import Icon from '../components/Icon.astro';
+import { Camera, FileCheck, Megaphone, MonitorSmartphone, Scale, Share2, SprayCan } from '@lucide/astro';
 import { property } from '../data/property';
 import kotiBoOverview from '../assets/product/koti-bo-overview.png';
+import livingRoomCta from '../assets/marketing/living-room-cta.jpg';
 const schema = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Homes.ax', url: 'https://homes.ax', description: 'Bostäder och digitala tjänster för boende på Åland.' },
   { '@context': 'https://schema.org', '@type': 'Organization', name: 'Succedo Invest & Consulting Ab', taxID: '2496398-7', url: 'https://homes.ax', email: 'info@homes.ax', address: { '@type': 'PostalAddress', addressLocality: 'Mariehamn', addressCountry: 'AX' } }
@@ -18,11 +20,21 @@ const schema = [
   </div></section>
   <section class="local-note"><div class="container"><p>En åländsk plattform för bostadsannonser, bostadsaktiebolag och tjänsterna som får boendet att fungera.</p><a class="text-link" href="/om-oss">Så fungerar Homes.ax <Icon name="arrow" /></a></div></section>
   <section class="section section-soft"><div class="container"><div class="section-heading-row"><div><p class="eyebrow">Aktuellt</p><h2>En bostad med två möjligheter</h2></div><a class="text-link" href="/bostader">Se alla bostäder <Icon name="arrow" /></a></div><PropertyCard /><DynamicListings compact={true} /></div></section>
+  <section class="section visibility-section" id="synlighet"><div class="container"><div class="intro-grid visibility-intro"><div><p class="eyebrow">Marknadsföring som bygger räckvidd</p><h2>Ett objekt. Flera vägar till rätt kund.</h2></div><div><p class="lead">Homes.ax kombinerar en stark bostadsannons med sociala medier och riktad annonsering. Plattformen är navet – varje kanal leder tillbaka till en tydlig presentation och direktkontakt.</p><a class="text-link" href="/publicera-annons">Publicera din bostad <Icon name="arrow" /></a></div></div><div class="visibility-grid">
+    <article><Megaphone size={56} stroke-width={1.45} /><span>01</span><h3>Riktad annonsering</h3><p>Kampanjer kan ge objektet extra räckvidd utanför den organiska publiken. Upplägg, kanal och annonsbudget avtalas separat.</p></article>
+    <article><Share2 size={56} stroke-width={1.45} /><span>02</span><h3>Sociala medier</h3><p>Innehåll anpassas för flöden där människor upptäcker, delar och tipsar vidare – med objektsidan som tydlig destination.</p></article>
+    <article><MonitorSmartphone size={56} stroke-width={1.45} /><span>03</span><h3>Den digitala plattformen</h3><p>Fakta, bilder, pris och kontakt samlas på en snabb objektsida som fungerar lika bra i mobilen som på en större skärm.</p></article>
+  </div></div></section>
   <section class="section company-intro"><div class="container company-intro-grid">
     <div><p class="eyebrow">Koti/bo för bostadsaktiebolag</p><h2>Bolagets arbete. Samlat och under kontroll.</h2><p class="lead">Koti/bo samlar bank, verifikat, lägenheter, vederlag, rapporter och dokument i en och samma arbetsyta. När ni behöver mer än programvara finns vårt erfarna nätverk för styrelsearbete, disponent-, administrations- och bokföringstjänster.</p><a class="button" href="/for-bostadsaktiebolag">Se tjänster för bostadsaktiebolag <Icon name="arrow" /></a></div>
     <figure class="product-shot"><Image src={kotiBoOverview} alt="Koti/bo – digital översikt för ett bostadsaktiebolag med ekonomi, bank, verifikat och rapporter" widths={[720, 1100, 1500]} sizes="(max-width: 1100px) 100vw, 55vw" format="webp" quality={86} /><figcaption>Koti/bo ger styrelsen och förvaltningen en gemensam lägesbild.</figcaption></figure>
   </div></section>
-  <section class="section service-overview"><div class="container"><div class="intro-grid"><div><p class="eyebrow">Tjänster kring boendet</p><h2>Rätt kompetens. Utan omvägar.</h2></div><div><p class="lead">Städning, fotografering, offentligt köpvittne och energideklarationer – via lokala samarbetspartners som ansvarar för sina uppdrag och villkor.</p><a class="text-link" href="/tjanster">Utforska tjänsterna <Icon name="arrow" /></a></div></div></div></section>
+  <section class="section service-overview"><div class="container"><div class="intro-grid"><div><p class="eyebrow">Tjänster kring boendet</p><h2>Rätt kompetens. Utan omvägar.</h2></div><div><p class="lead">Städning, fotografering, offentligt köpvittne och energideklarationer – via lokala samarbetspartners som ansvarar för sina uppdrag och villkor.</p><a class="text-link" href="/tjanster">Utforska tjänsterna <Icon name="arrow" /></a></div></div><div class="service-icon-row">
+    <a href="/tjanster"><SprayCan size={50} stroke-width={1.4} /><span>Städning</span></a>
+    <a href="/tjanster"><Camera size={50} stroke-width={1.4} /><span>Fotografering</span></a>
+    <a href="/tjanster"><Scale size={50} stroke-width={1.4} /><span>Offentligt köpvittne</span></a>
+    <a href="/tjanster"><FileCheck size={50} stroke-width={1.4} /><span>Energideklaration</span></a>
+  </div></div></section>
   <section class="section partner-band"><div class="container partner-band-inner"><div><p class="eyebrow light">Samarbeta med oss</p><h2>Har ni kompetensen? Vi bygger räckvidden.</h2><p>Homes.ax växer med erfarna aktörer inom bostadsaktiebolag, fastighetsaffärer och tjänster kring boendet. Vi söker fler samarbeten där roller, ansvar och kundnytta är glasklara.</p></div><a class="button button-light" href="/samarbeta">Föreslå ett samarbete <Icon name="arrow" /></a></div></section>
-  <section class="section cta-split"><div class="container cta-split-inner"><div><p class="eyebrow">Har du en bostad att visa?</p><h2>Ge den en tydlig plats.</h2><p>Skicka in uppgifterna kostnadsfritt. Annonsen innehållsgranskas före publicering.</p></div><a class="button" href="/publicera-annons">Publicera annons <Icon name="arrow" /></a></div></section>
+  <section class="publish-visual-cta" id="publicera"><Image src={livingRoomCta} alt="Ljust minimalistiskt vardagsrum med stora fönster och grön växt" widths={[800, 1300, 2000]} sizes="100vw" format="webp" quality={86} /><div class="container"><div class="publish-visual-card"><p class="eyebrow light">Publicera annons</p><h2>Ge bostaden den synlighet den förtjänar.</h2><p>Skapa en tydlig annons kostnadsfritt. När du vill växla upp kan vi förstärka räckvidden med sociala medier och riktad annonsering.</p><a class="button button-light" href="/publicera-annons">Publicera din bostad <Icon name="arrow" /></a></div></div></section>
 </BaseLayout>

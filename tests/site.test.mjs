@@ -34,11 +34,14 @@ test('annonsflödet bevaras och förklarar innehållsgranskningen', async () => 
   assert.match(html, /väntar på granskning/i);
   assert.match(html, /inte en faktakontroll/i);
   assert.match(html, /rätt att använda bilderna/i);
+  assert.match(html, /sociala medier/i);
+  assert.match(html, /riktad annonsering/i);
 });
 
 test('startsidan visar bostäder, Koti/bo och partneringång', async () => {
   const html = await read('/index.html');
-  for (const text of ['Hem på Åland', 'Publicera annons', 'Tjänster för bostadsaktiebolag', 'Koti/bo', 'Samarbeta med oss', 'Till salu', 'Uthyres']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['Hem på Åland', 'Publicera annons', 'Tjänster för bostadsaktiebolag', 'Koti/bo', 'Samarbeta med oss', 'Till salu', 'Uthyres', 'Riktad annonsering', 'Sociala medier', 'Den digitala plattformen', 'Ge bostaden den synlighet den förtjänar']) assert.match(html, new RegExp(text, 'i'));
+  assert.match(html, /lucide-megaphone/i);
   assert.doesNotMatch(html, /under utveckling|pilot|planeras/i);
   assert.match(html, /rel="canonical"/);
   assert.match(html, /property="og:title"/);
@@ -60,6 +63,7 @@ test('tjänstesidan visar tillgängliga kategorier utan planeringsetiketter', as
   const html = await read('/tjanster/index.html');
   for (const text of ['Städning', 'Fotografering', 'Offentligt köpvittne', 'Energideklaration', 'Erbjuder ni en relevant tjänst']) assert.match(html, new RegExp(text, 'i'));
   assert.doesNotMatch(html, /Planeras|Under utveckling/i);
+  assert.match(html, /lucide-camera/i);
 });
 
 test('juridisk part, roller och differentierad affärsmodell är konsekventa', async () => {
