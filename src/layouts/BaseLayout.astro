@@ -2,8 +2,8 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-interface Props { title: string; description: string; image?: string; noindex?: boolean; schema?: Record<string, unknown> | Record<string, unknown>[]; }
-const { title, description, image = '/og-default.png', noindex = false, schema } = Astro.props;
+interface Props { title: string; description: string; image?: string; imageAlt?: string; noindex?: boolean; ogType?: 'website' | 'article'; schema?: Record<string, unknown> | Record<string, unknown>[]; }
+const { title, description, image = '/og-default.png', imageAlt = 'Homes.ax – bostäder, bolag och boendetjänster på Åland', noindex = false, ogType = 'website', schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle = title.includes('Homes.ax') ? title : `${title} | Homes.ax`;
 ---
@@ -14,17 +14,21 @@ const fullTitle = title.includes('Homes.ax') ? title : `${title} | Homes.ax`;
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#243d2b" />
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="sv_AX" />
     <meta property="og:site_name" content="Homes.ax" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site)} />
     <title>{fullTitle}</title>
     <!-- eslint-disable-next-line astro/no-set-html-directive -- JSON is serialized from trusted local data -->
     {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}

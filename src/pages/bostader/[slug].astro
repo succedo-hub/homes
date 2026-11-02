@@ -17,7 +17,7 @@ const schema = [
   { '@context': 'https://schema.org', '@type': 'Offer', price: property.rent, priceCurrency: 'EUR', availability: 'https://schema.org/PreOrder', itemOffered: { '@type': 'Apartment', name: property.title } }
 ];
 ---
-<BaseLayout title="4 rum och kök i Västernäs, Mariehamn | Homes.ax" description="Parhusbostad om 94,1 m² i Västernäs, Mariehamn. Till salu eller för uthyrning. Se bilder, bostadsfakta och aktuell kontaktväg." image={property.gallery[0].src.src} schema={schema}>
+<BaseLayout title="4 rum och kök i Västernäs, Mariehamn | Homes.ax" description="Parhusbostad om 94,1 m² i Västernäs, Mariehamn. Till salu för 245 000 euro eller för uthyrning. Se bilder, bostadsfakta och kontakta annonsören direkt." image={property.gallery[0].src.src} imageAlt={property.gallery[0].alt} ogType="article" schema={schema}>
   <div class="container breadcrumb"><a href="/bostader">Bostäder</a><span aria-hidden="true">/</span><span>Svärtesgränd</span></div>
   <section class="property-heading container"><div><span class="status static">Till salu · Uthyres</span><h1>{property.title}</h1><p class="location">{property.location}</p></div><div class="price"><strong>{salePrice} €</strong><span>eller 1 290 €/månad</span></div></section>
   <section class="gallery container" aria-label="Bildgalleri">

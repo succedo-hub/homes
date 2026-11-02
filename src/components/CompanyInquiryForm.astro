@@ -1,17 +1,22 @@
 ---
+interface Props { audience?: 'housing-company' | 'property-owner' | 'general'; submitLabel?: string; }
+const { audience = 'housing-company', submitLabel = 'Boka en första genomgång' } = Astro.props;
+const subject = audience === 'property-owner' ? 'Förfrågan från fastighetsägare eller uthyrande bolag' : audience === 'general' ? 'Förfrågan om bolag och förvaltning' : 'Förfrågan om Koti/bo och bolagstjänster';
+const formType = audience === 'property-owner' ? 'fastighetsagare' : audience === 'general' ? 'bolag-forvaltning' : 'bostadsaktiebolag';
 ---
 <form class="contact-form" action="https://formspree.io/f/xbgjrepy" method="POST">
-  <input type="hidden" name="_subject" value="Förfrågan om Koti/bo och bolagstjänster" />
-  <input type="hidden" name="formulartyp" value="bostadsaktiebolag" />
+  <input type="hidden" name="_subject" value={subject} />
+  <input type="hidden" name="formulartyp" value={formType} />
   <div class="form-grid">
     <label><span>Din roll <abbr title="obligatoriskt">*</abbr></span><input type="text" name="roll" required placeholder="Till exempel styrelsemedlem eller disponent" /></label>
-    <label><span>Bostadsaktiebolag <abbr title="obligatoriskt">*</abbr></span><input type="text" name="bolag" required autocomplete="organization" /></label>
+    <label><span>Bolag eller verksamhet <abbr title="obligatoriskt">*</abbr></span><input type="text" name="bolag" required autocomplete="organization" /></label>
     <label><span>Namn <abbr title="obligatoriskt">*</abbr></span><input type="text" name="namn" required autocomplete="name" /></label>
     <label><span>E-post <abbr title="obligatoriskt">*</abbr></span><input type="email" name="email" required autocomplete="email" /></label>
+    {audience === 'property-owner' && <><label><span>Typ av fastigheter</span><input type="text" name="fastighetstyp" placeholder="Bostäder, lokaler eller båda" /></label><label><span>Antal lägenheter eller lokaler</span><input type="number" name="antal_enheter" min="1" max="10000" inputmode="numeric" /></label></>}
   </div>
-  <label><span>Vad vill ni få bättre kontroll över? <abbr title="obligatoriskt">*</abbr></span><textarea name="meddelande" rows="6" required placeholder="Berätta kort om bolaget, arbetssättet och vilka behov ni vill lösa."></textarea></label>
+  <label><span>Vilket stöd söker ni? <abbr title="obligatoriskt">*</abbr></span><textarea name="meddelande" rows="6" required placeholder="Berätta kort om verksamheten, arbetssättet och vilka behov ni vill lösa."></textarea></label>
   <label class="consent-row"><input type="checkbox" name="integritet_godkand" value="Ja" required /><span>Jag godkänner att Succedo Invest &amp; Consulting Ab behandlar uppgifterna för att besvara förfrågan enligt <a href="/integritet">integritetspolicyn</a>. <abbr title="obligatoriskt">*</abbr></span></label>
   <label class="honeypot" aria-hidden="true">Lämna detta fält tomt<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
-  <button class="button" type="submit">Boka en första genomgång</button>
+  <button class="button" type="submit">{submitLabel}</button>
   <p class="form-note">Skicka inte bokföringsmaterial, personuppgifter om boende eller andra känsliga handlingar i den första kontakten.</p>
 </form>

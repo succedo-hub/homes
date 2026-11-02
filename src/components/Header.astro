@@ -2,7 +2,7 @@
 import Icon from './Icon.astro';
 const path = Astro.url.pathname;
 const links = [
-  ['/bostader', 'Bostäder'], ['/for-bostadsaktiebolag', 'Bostadsaktiebolag'], ['/tjanster', 'Tjänster'], ['/samarbeta', 'Samarbeta'], ['/om-oss', 'Om Homes.ax']
+  ['/bostader', 'Bostäder'], ['/publicera-annons', 'Publicera annons'], ['/bolag-forvaltning', 'Bolag & förvaltning'], ['/tjanster', 'Tjänster'], ['/om-oss', 'Om Homes.ax']
 ] as const;
 ---
 <header class="site-header">
@@ -14,8 +14,7 @@ const links = [
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav"><Icon name="menu" /> <span>Meny</span></button>
     <nav id="nav" aria-label="Huvudmeny">
-      {links.map(([href, label]) => <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
-      <a class="button button-small button-sage" href="/publicera-annons">Publicera annons</a>
+      {links.map(([href, label]) => <a class:list={{ 'nav-featured': href === '/publicera-annons' }} href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
     </nav>
   </div>
 </header>

@@ -5,7 +5,7 @@ import { test } from 'node:test';
 const read = (path) => readFile(new URL(`../dist${path}`, import.meta.url), 'utf8');
 
 test('alla centrala sidor är byggda', async () => {
-  const pages = ['/', '/bostader/', '/bostader/4-rum-och-kok-i-parhus-i-mariehamn/', '/bostader/objekt/', '/publicera-annons/', '/jag-soker-bostad/', '/for-bostadsaktiebolag/', '/tjanster/', '/samarbeta/', '/om-oss/', '/kontakt/', '/integritet/', '/villkor/', '/404.html'];
+  const pages = ['/', '/bostader/', '/bostader/4-rum-och-kok-i-parhus-i-mariehamn/', '/bostader/objekt/', '/publicera-annons/', '/jag-soker-bostad/', '/bolag-forvaltning/', '/for-bostadsaktiebolag/', '/for-fastighetsagare/', '/koti-bo/', '/tjanster/', '/samarbeta/', '/om-oss/', '/kontakt/', '/integritet/', '/villkor/', '/404.html'];
   for (const page of pages) {
     const file = page.endsWith('.html') ? page : `${page}index.html`;
     assert.ok((await stat(new URL(`../dist${file}`, import.meta.url))).isFile(), `Saknar ${file}`);
@@ -38,20 +38,28 @@ test('annonsflödet bevaras och förklarar innehållsgranskningen', async () => 
   assert.match(html, /riktad annonsering/i);
 });
 
-test('startsidan visar bostäder, Koti/bo och partneringång', async () => {
+test('startsidan prioriterar bostäder och visar de tre affärsområdena', async () => {
   const html = await read('/index.html');
-  for (const text of ['Hem på Åland', 'Publicera annons', 'Tjänster för bostadsaktiebolag', 'Koti/bo', 'Samarbeta med oss', 'Till salu', 'Uthyres', 'Riktad annonsering', 'Sociala medier', 'Den digitala plattformen', 'Ge bostaden den synlighet den förtjänar']) assert.match(html, new RegExp(text, 'i'));
-  assert.match(html, /lucide-megaphone/i);
+  for (const text of ['Bostäder och boendetjänster på Åland', 'Kostnadsfria bostadsannonser', 'Direktkontakt med annonsören', 'Publicera bostadsannons kostnadsfritt', 'Bolag &amp; förvaltning', 'Koti\/bo', 'För fastighetsägare', 'Till salu', 'Uthyres', 'Varför Homes.ax']) assert.match(html, new RegExp(text, 'i'));
+  assert.match(html, /inte en fastighetsmäklare/i);
   assert.doesNotMatch(html, /under utveckling|pilot|planeras/i);
   assert.match(html, /rel="canonical"/);
   assert.match(html, /property="og:title"/);
+  assert.match(html, /name="twitter:description"/);
+  assert.match(html, /name="robots" content="index, follow, max-image-preview:large"/);
   assert.doesNotMatch(html, /googletagmanager|analytics/i);
 });
 
-test('bolags- och partnersidor är tydliga och kontaktformuläret fungerar tekniskt', async () => {
+test('bolags-, Koti/bo- och partnersidor är tydliga och kontaktformulären fungerar', async () => {
+  const hub = await read('/bolag-forvaltning/index.html');
   const company = await read('/for-bostadsaktiebolag/index.html');
+  const owner = await read('/for-fastighetsagare/index.html');
+  const koti = await read('/koti-bo/index.html');
   const partner = await read('/samarbeta/index.html');
+  for (const text of ['Digitala verktyg', 'Personlig kompetens', 'Bostadsaktiebolag', 'Fastighetsägare']) assert.match(hub, new RegExp(text, 'i'));
   for (const text of ['Koti/bo', 'Ekonomi och bokföringsunderlag', 'Lägenheter och vederlag', 'Styrelsearbete', 'Disponenttjänster', 'Administration', 'Bokföring']) assert.match(company, new RegExp(text, 'i'));
+  for (const text of ['Ekonomi och verifikat', 'Dokument', 'Rapporter och uppföljning', 'digital produkt']) assert.match(koti, new RegExp(text, 'i'));
+  for (const text of ['fastighetsägare', 'Typ av fastigheter', 'Antal lägenheter eller lokaler', 'inte.*komplett system för hyresadministration']) assert.match(owner, new RegExp(text, 'is'));
   assert.doesNotMatch(company, /under utveckling|pilot|planerat för/i);
   for (const field of ['roll', 'bolag', 'namn', 'email', 'meddelande']) assert.match(company, new RegExp(`name="${field}"`));
   assert.match(company, /action="https:\/\/formspree.io\/f\/xbgjrepy"/);
@@ -59,9 +67,10 @@ test('bolags- och partnersidor är tydliga och kontaktformuläret fungerar tekni
   assert.match(partner, /mailto:info@homes.ax/i);
 });
 
-test('tjänstesidan visar tillgängliga kategorier utan planeringsetiketter', async () => {
+test('tjänstesidan skiljer på produkt, professionella uppdrag och partnerarbete', async () => {
   const html = await read('/tjanster/index.html');
-  for (const text of ['Städning', 'Fotografering', 'Offentligt köpvittne', 'Energideklaration', 'Erbjuder ni en relevant tjänst']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['Bostadsfotografering', 'Bostadsmarknadsföring', 'Bokföring', 'Disponentfunktioner', 'Offentligt köpvittne', 'Juridisk konsultation', 'Energideklaration', 'Flyttstädning', 'Erbjuder ni en relevant tjänst']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['Digital produkt', 'Professionellt uppdrag', 'Via ansvarig partner', 'Status', 'Utförare']) assert.match(html, new RegExp(text, 'i'));
   assert.doesNotMatch(html, /Planeras|Under utveckling/i);
   assert.match(html, /lucide-camera/i);
 });
@@ -81,5 +90,5 @@ test('juridisk part, roller och differentierad affärsmodell är konsekventa', a
 
 test('sitemap innehåller nya publika sidor och befintlig objektslug', async () => {
   const sitemap = await readFile(new URL('../dist/sitemap-0.xml', import.meta.url), 'utf8');
-  for (const path of ['/for-bostadsaktiebolag/', '/samarbeta/', '/bostader/4-rum-och-kok-i-parhus-i-mariehamn/']) assert.match(sitemap, new RegExp(`https://homes\\.ax${path}`));
+  for (const path of ['/bolag-forvaltning/', '/for-bostadsaktiebolag/', '/for-fastighetsagare/', '/koti-bo/', '/samarbeta/', '/bostader/4-rum-och-kok-i-parhus-i-mariehamn/']) assert.match(sitemap, new RegExp(`https://homes\\.ax${path}`));
 });

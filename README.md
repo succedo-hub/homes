@@ -1,6 +1,6 @@
 # Homes.ax
 
-Version 1.0 av Homes.ax – en svensk bostadsplattform för privata sälj- och hyresobjekt på Åland.
+Homes.ax samlar kostnadsfri bostadsannonsering, digitala verktyg för bostadsaktiebolag och tydligt avgränsade boendetjänster på Åland.
 
 Homes.ax är en digital annonsplattform och agerar inte som fastighetsmäklare eller part i en affär.
 
@@ -34,7 +34,9 @@ npm test
 npm run deploy:dry
 ```
 
-`npm test` körs efter ett lyckat bygge och verifierar centrala routes, bostadsfakta, metadata och frånvaro av spårning.
+`npm test` körs efter ett lyckat bygge och verifierar centrala routes, bostadsfakta, metadata, bolagsflöden och frånvaro av spårning.
+
+Viktiga ingångar utöver startsidan är `/bostader`, `/publicera-annons`, `/bolag-forvaltning`, `/koti-bo`, `/for-bostadsaktiebolag`, `/for-fastighetsagare` och `/tjanster`.
 
 ## Supabase och granskningsflöde
 
@@ -96,5 +98,6 @@ För slutlig domän konfigureras en Custom Domain i Cloudflare för Worker-proje
 
 - annonsgodkännande görs tills vidare i Supabase-panelen
 - dynamiska objektsidor använder en frågeparameter och är därför märkta `noindex` i version 1.0
-- tjänsteleverantörer, priser, omdömen och statistik publiceras inte ännu
+- leverantör, pris och avtal bekräftas separat för varje professionell tjänst
+- Koti/bo är inte ett fullständigt uthyrnings- eller fastighetsförvaltningssystem
 - ingen analys eller icke-nödvändiga cookies används
