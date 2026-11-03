@@ -40,7 +40,7 @@ test('annonsflödet bevaras och förklarar innehållsgranskningen', async () => 
 
 test('startsidan prioriterar bostäder och visar de tre affärsområdena', async () => {
   const html = await read('/index.html');
-  for (const text of ['Bostäder och boendetjänster på Åland', 'Kostnadsfria bostadsannonser', 'Direktkontakt med annonsören', 'Publicera bostadsannons kostnadsfritt', 'Bolag &amp; förvaltning', 'Koti\/bo', 'För fastighetsägare', 'Till salu', 'Uthyres', 'Varför Homes.ax']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['Bostäder och boendetjänster på Åland', 'Kostnadsfria bostadsannonser', 'Direktkontakt med annonsören', 'Publicera bostadsannons kostnadsfritt', 'Bolag &amp; förvaltning', 'Digital arbetsyta för bostadsaktiebolag', 'För fastighetsägare', 'Till salu', 'Uthyres', 'Varför Homes.ax']) assert.match(html, new RegExp(text, 'i'));
   assert.match(html, /inte en fastighetsmäklare/i);
   assert.doesNotMatch(html, /under utveckling|pilot|planeras/i);
   assert.match(html, /rel="canonical"/);
@@ -50,15 +50,15 @@ test('startsidan prioriterar bostäder och visar de tre affärsområdena', async
   assert.doesNotMatch(html, /googletagmanager|analytics/i);
 });
 
-test('bolags-, Koti/bo- och partnersidor är tydliga och kontaktformulären fungerar', async () => {
+test('bolags-, arbetsyte- och partnersidor är tydliga och kontaktformulären fungerar', async () => {
   const hub = await read('/bolag-forvaltning/index.html');
   const company = await read('/for-bostadsaktiebolag/index.html');
   const owner = await read('/for-fastighetsagare/index.html');
   const koti = await read('/koti-bo/index.html');
   const partner = await read('/samarbeta/index.html');
   for (const text of ['Digitala verktyg', 'Personlig kompetens', 'Bostadsaktiebolag', 'Fastighetsägare']) assert.match(hub, new RegExp(text, 'i'));
-  for (const text of ['Koti/bo', 'Ekonomi och bokföringsunderlag', 'Lägenheter och vederlag', 'Styrelsearbete', 'Disponenttjänster', 'Administration', 'Bokföring']) assert.match(company, new RegExp(text, 'i'));
-  for (const text of ['Ekonomi och verifikat', 'Dokument', 'Rapporter och uppföljning', 'digital produkt']) assert.match(koti, new RegExp(text, 'i'));
+  for (const text of ['Den digitala arbetsytan', 'Ekonomi och bokföringsunderlag', 'Lägenheter och vederlag', 'Styrelsearbete', 'Disponenttjänster', 'Administration', 'Bokföring']) assert.match(company, new RegExp(text, 'i'));
+  for (const text of ['Ekonomi och verifikat', 'Dokument', 'Rapporter och uppföljning', 'digital arbetsyta']) assert.match(koti, new RegExp(text, 'i'));
   for (const text of ['fastighetsägare', 'Typ av fastigheter', 'Antal lägenheter eller lokaler', 'inte.*komplett system för hyresadministration']) assert.match(owner, new RegExp(text, 'is'));
   assert.doesNotMatch(company, /under utveckling|pilot|planerat för/i);
   for (const field of ['roll', 'bolag', 'namn', 'email', 'meddelande']) assert.match(company, new RegExp(`name="${field}"`));
@@ -70,7 +70,7 @@ test('bolags-, Koti/bo- och partnersidor är tydliga och kontaktformulären fung
 test('tjänstesidan skiljer på produkt, professionella uppdrag och partnerarbete', async () => {
   const html = await read('/tjanster/index.html');
   for (const text of ['Bostadsfotografering', 'Bostadsmarknadsföring', 'Bokföring', 'Disponentfunktioner', 'Offentligt köpvittne', 'Juridisk konsultation', 'Energideklaration', 'Flyttstädning', 'Erbjuder ni en relevant tjänst']) assert.match(html, new RegExp(text, 'i'));
-  for (const text of ['Digital produkt', 'Professionellt uppdrag', 'Via ansvarig partner', 'Status', 'Utförare']) assert.match(html, new RegExp(text, 'i'));
+  for (const text of ['Digitalt verktyg', 'Professionellt uppdrag', 'Via ansvarig partner', 'Status', 'Utförare']) assert.match(html, new RegExp(text, 'i'));
   assert.doesNotMatch(html, /Planeras|Under utveckling/i);
   assert.match(html, /lucide-camera/i);
 });

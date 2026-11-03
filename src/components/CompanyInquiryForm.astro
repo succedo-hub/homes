@@ -1,7 +1,7 @@
 ---
 interface Props { audience?: 'housing-company' | 'property-owner' | 'general'; submitLabel?: string; }
 const { audience = 'housing-company', submitLabel = 'Boka en första genomgång' } = Astro.props;
-const subject = audience === 'property-owner' ? 'Förfrågan från fastighetsägare eller uthyrande bolag' : audience === 'general' ? 'Förfrågan om bolag och förvaltning' : 'Förfrågan om Koti/bo och bolagstjänster';
+const subject = audience === 'property-owner' ? 'Förfrågan från fastighetsägare eller uthyrande bolag' : audience === 'general' ? 'Förfrågan om bolag och förvaltning' : 'Förfrågan om digital arbetsyta och bolagstjänster';
 const formType = audience === 'property-owner' ? 'fastighetsagare' : audience === 'general' ? 'bolag-forvaltning' : 'bostadsaktiebolag';
 ---
 <form class="contact-form" action="https://formspree.io/f/xbgjrepy" method="POST">
